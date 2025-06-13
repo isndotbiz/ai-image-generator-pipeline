@@ -1,0 +1,123 @@
+{
+  "name": "Palette B",
+  "created_at": "2025-06-13T06:23:21.088615",
+  "colors": [
+    {
+      "hex": "#b8b7a8",
+      "rgb": [
+        184,
+        183,
+        168
+      ],
+      "frequency": 2,
+      "appearances": [
+        {
+          "video": "cluster_10_technology_1_matches.mp4",
+          "frame_position": "25%",
+          "color_rank": 4,
+          "rgb": [
+            184,
+            183,
+            168
+          ]
+        },
+        {
+          "video": "cluster_10_technology_1_matches.mp4",
+          "frame_position": "75%",
+          "color_rank": 4,
+          "rgb": [
+            184,
+            183,
+            168
+          ]
+        }
+      ]
+    },
+    {
+      "hex": "#b4b3a8",
+      "rgb": [
+        180,
+        179,
+        168
+      ],
+      "frequency": 1,
+      "appearances": [
+        {
+          "video": "cluster_02_luxury_goods_1_matches.mp4",
+          "frame_position": "25%",
+          "color_rank": 3,
+          "rgb": [
+            180,
+            179,
+            168
+          ]
+        }
+      ]
+    },
+    {
+      "hex": "#c7c6bf",
+      "rgb": [
+        199,
+        198,
+        191
+      ],
+      "frequency": 1,
+      "appearances": [
+        {
+          "video": "cluster_06_luxury_goods_2_matches.mp4",
+          "frame_position": "25%",
+          "color_rank": 1,
+          "rgb": [
+            199,
+            198,
+            191
+          ]
+        }
+      ]
+    },
+    {
+      "hex": "#aaaaa6",
+      "rgb": [
+        170,
+        170,
+        166
+      ],
+      "frequency": 1,
+      "appearances": [
+        {
+          "video": "cluster_10_technology_1_matches.mp4",
+          "frame_position": "25%",
+          "color_rank": 5,
+          "rgb": [
+            170,
+            170,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "hex": "#b4b2a7",
+      "rgb": [
+        180,
+        178,
+        167
+      ],
+      "frequency": 1,
+      "appearances": [
+        {
+          "video": "cluster_11_luxury_goods_1_matches.mp4",
+          "frame_position": "75%",
+          "color_rank": 4,
+          "rgb": [
+            180,
+            178,
+            167
+          ]
+        }
+      ]
+    }
+  ],
+  "total_frequency": 6,
+  "color_count": 5
+}

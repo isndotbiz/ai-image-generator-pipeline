@@ -1,0 +1,14 @@
+# Core dependencies for image generation
+replicate>=1.0.0
+requests>=2.25.0
+piexif>=1.1.0
+Pillow>=8.0.0
+numpy>=1.21.0
+scikit-learn>=1.0.0
+
+# Optional dependencies for extended functionality
+# Uncomment if needed for specific features
+# opencv-python>=4.5.0
+# matplotlib>=3.3.0
+# scipy>=1.7.0
+

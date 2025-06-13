@@ -1,0 +1,134 @@
+# Content Blueprint for Theme Compliance
+# Defines approved topics, tone, and keywords for content generation
+
+approved_topics:
+  - luxury_lifestyle
+  - premium_products
+  - investment_education
+  - wealth_building
+  - financial_success
+  - entrepreneurship
+  - high_end_travel
+  - quality_craftsmanship
+  - premium_experiences
+  - financial_literacy
+
+approved_tone:
+  - aspirational
+  - motivational
+  - educational
+  - professional
+  - inspirational
+  - empowering
+  - sophisticated
+  - confident
+  - encouraging
+  - respectful
+
+approved_keywords:
+  financial:
+    - prosperity
+    - wealth
+    - success
+    - investment
+    - growth
+    - opportunity
+    - financial freedom
+    - abundance
+    - achievement
+    - progress
+    - advancement
+    - excellence
+    - leadership
+    - innovation
+    - vision
+  
+  lifestyle:
+    - luxury
+    - premium
+    - quality
+    - craftsmanship
+    - elegance
+    - sophistication
+    - refinement
+    - exclusivity
+    - prestige
+    - distinction
+  
+  motivational:
+    - inspire
+    - achieve
+    - excel
+    - pursue
+    - strive
+    - build
+    - create
+    - develop
+    - advance
+    - elevate
+    - transform
+    - empower
+    - enable
+    - facilitate
+
+prohibited_content:
+  findom_terms:
+    - tribute
+    - submit
+    - surrender
+    - obey
+    - serve
+    - worship
+    - bow
+    - kneel
+    - revere
+    - devotion
+    - domination
+    - submission
+    - slave
+    - master
+    - mistress
+    - goddess
+    - findom
+    - financial domination
+  
+  power_dynamics:
+    - commanding language that creates hierarchy
+    - submission-based messaging
+    - worship-oriented content
+    - dominance themes
+    - servitude implications
+    - payment as tribute concepts
+  
+  inappropriate_tone:
+    - demanding
+    - commanding obedience
+    - creating power imbalances
+    - exploitative messaging
+    - manipulative language
+
+replacement_suggestions:
+  "Tribute Now, Thank Yourself Later": "Invest Now, Thank Yourself Later"
+  "Submit to Success": "Commit to Success"
+  "Surrender to Sovereign Wealth": "Embrace Sovereign Wealth"
+  "Obey the Call of Currency": "Answer the Call of Currency"
+  "Serve the Yield, Earn the Life": "Pursue the Yield, Earn the Life"
+  "Bow to Balance Sheets": "Master Balance Sheets"
+  "Kneel Before Compounding": "Embrace Compounding"
+  "Revere Residual Income": "Build Residual Income"
+  "Your Tribute, My Triumph": "Your Investment, Your Triumph"
+  "Invest in My Indulgence": "Invest in Excellence"
+  "Wealth Follows Devotion": "Wealth Follows Dedication"
+  "Luxury Earns Your Loyalty": "Luxury Reflects Your Success"
+  "Claim Your Throne of Capital": "Build Your Capital Foundation"
+
+compliance_guidelines:
+  - All content must promote financial education and empowerment
+  - Language should be respectful and professional
+  - No power dynamics or hierarchical messaging
+  - Focus on mutual benefit and personal growth
+  - Avoid any form of financial exploitation themes
+  - Maintain aspirational and motivational tone
+  - Ensure content is appropriate for all audiences
+  - Promote healthy financial relationships and practices
+
