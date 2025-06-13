@@ -24,31 +24,19 @@ class SmartproxyConfig:
     
     def __init__(self):
         """Initialize with credentials from environment variables."""
-        self.username = os.getenv('SMARTPROXY_USERNAME')
-        self.password = os.getenv('SMARTPROXY_PASSWORD')
-        self.auth_token = os.getenv('SMARTPROXY_AUTH_TOKEN')
-        
-        if not all([self.username, self.password, self.auth_token]):
-            raise ValueError(
-                "Missing Smartproxy credentials. Please set SMARTPROXY_USERNAME, "
-                "SMARTPROXY_PASSWORD, and SMARTPROXY_AUTH_TOKEN environment variables."
-            )
+        self.username = os.getenv("SMARTPROXY_USERNAME")
+        self.password = os.getenv("SMARTPROXY_PASSWORD")
+        if not self.username or not self.password:
+            raise ValueError("SMARTPROXY_USERNAME and SMARTPROXY_PASSWORD missing in environment")
     
-    def get_proxy_config(self, endpoint: str = "datacenter") -> Dict[str, str]:
+    def get_proxy_config(self) -> Dict[str, str]:
         """Get proxy configuration for requests.
-        
-        Args:
-            endpoint: Proxy endpoint type ('datacenter', 'residential', etc.)
             
         Returns:
             Dictionary with proxy configuration for requests library
         """
-        proxy_url = f"http://{self.username}:{self.password}@gate.smartproxy.com:10000"
-        
-        return {
-            'http': proxy_url,
-            'https': proxy_url
-        }
+        proxy_url = f"socks5h://user-sptstlcgih-country-us:67o6JexhegqoQ1Wc_E@isp.decodo.com:10001"
+        return {"http": proxy_url, "https": proxy_url}
     
     def get_auth_headers(self) -> Dict[str, str]:
         """Get authentication headers for direct API calls.
@@ -57,8 +45,7 @@ class SmartproxyConfig:
             Dictionary with authentication headers
         """
         return {
-            'Authorization': f'Basic {self.auth_token}',
-            'User-Agent': 'AI-Image-Generator-Pipeline/1.0'
+            "User-Agent": "AI-Image-Generator-Pipeline/1.0"
         }
     
     def test_connection(self) -> bool:
@@ -69,9 +56,11 @@ class SmartproxyConfig:
         """
         try:
             proxies = self.get_proxy_config()
+            headers = self.get_auth_headers()
             response = requests.get(
                 'http://httpbin.org/ip',
                 proxies=proxies,
+                headers=headers,
                 timeout=10
             )
             return response.status_code == 200
@@ -128,6 +117,5 @@ if __name__ == '__main__':
         print(f"✗ Configuration error: {e}")
         print("\nPlease ensure your .env file contains:")
         print("SMARTPROXY_USERNAME=your_username")
-        print("SMARTPROXY_PASSWORD=your_password") 
-        print("SMARTPROXY_AUTH_TOKEN=your_auth_token")
+        print("SMARTPROXY_PASSWORD=your_password")
 
