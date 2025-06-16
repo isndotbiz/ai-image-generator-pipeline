@@ -7,9 +7,24 @@ numpy>=1.21.0
 scikit-learn>=1.0.0
 python-dotenv>=1.0.0
 
-# Optional dependencies for extended functionality
-# Uncomment if needed for specific features
-# opencv-python>=4.5.0
-# matplotlib>=3.3.0
-# scipy>=1.7.0
+# Image processing and computer vision
+opencv-python>=4.5.0
+matplotlib>=3.3.0
+scipy>=1.7.0
+
+# Web framework
+Flask>=3.0.0
+
+# Data processing
+pandas>=2.0.0
+
+# Machine learning and AI
+torch>=2.0.0
+torchvision>=0.15.0
+transformers>=4.0.0
+huggingface-hub>=0.20.0
+
+# Additional utilities
+faiss-cpu>=1.7.0
+pytesseract>=0.3.0
 
