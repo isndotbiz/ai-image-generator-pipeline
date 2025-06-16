@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Generation - AI Image Pipeline</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header h1 {
+            color: white;
+            font-size: 2rem;
+            font-weight: 300;
+        }
+        
+        .nav {
+            margin-top: 1rem;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-group {
+            margin: 1.5rem 0;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .alert {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .preview {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎨 Custom Image Generation</h1>
+        <div class="nav">
+            <a href="/">← Dashboard</a>
+            <a href="/logs">📋 View Logs</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2>Generate Custom Image</h2>
+            <p>Create a custom image using the AI pipeline with your own parameters.</p>
+            
+            <form id="generateForm">
+                <div class="grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="location">Location *</label>
+                            <input type="text" id="location" placeholder="e.g., Maldives overwater bungalow" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="item">Item *</label>
+                            <input type="text" id="item" placeholder="e.g., vintage Leica camera" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="mantra">Mantra *</label>
+                            <input type="text" id="mantra" placeholder="e.g., Honor the Path to Prosperity" required>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label for="platform">Platform</label>
+                            <select id="platform">
+                                <option value="ig">Instagram (4:5)</option>
+                                <option value="tt">TikTok (9:16)</option>
+                                <option value="tw">Twitter (16:9)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="palette">Color Palette</label>
+                            <select id="palette">
+                                <option value="A">Palette A (Warm/Luxury)</option>
+                                <option value="B">Palette B (Cool/Modern)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="customPrompt">Custom Prompt (Optional)</label>
+                            <textarea id="customPrompt" placeholder="Override with your own prompt..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">🚀 Generate Image</button>
+            </form>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Generating your custom image...</p>
+                <p><small>This may take 15-30 seconds</small></p>
+            </div>
+            
+            <div class="alert alert-success" id="success">
+                <strong>Success!</strong> Image generated successfully!
+                <br><strong>Filename:</strong> <span id="filename"></span>
+                <br><strong>Prompt used:</strong> <span id="promptUsed"></span>
+            </div>
+            
+            <div class="alert alert-error" id="error">
+                <strong>Error!</strong> <span id="errorMsg"></span>
+            </div>
+            
+            <div class="preview" id="preview" style="display: none;">
+                <h3>Generated Image Preview</h3>
+                <img id="previewImg" alt="Generated image preview">
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('generateForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Hide previous results
+            document.getElementById('success').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('preview').style.display = 'none';
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            
+            const data = {
+                location: document.getElementById('location').value,
+                item: document.getElementById('item').value,
+                mantra: document.getElementById('mantra').value,
+                platform: document.getElementById('platform').value,
+                palette: document.getElementById('palette').value,
+                customPrompt: document.getElementById('customPrompt').value
+            };
+            
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+                
+                if (result.success) {
+                    document.getElementById('filename').textContent = result.filename;
+                    document.getElementById('promptUsed').textContent = result.prompt;
+                    document.getElementById('success').style.display = 'block';
+                    
+                    // Show preview if image exists
+                    const img = document.getElementById('previewImg');
+                    img.src = result.filename + '?t=' + Date.now(); // Cache buster
+                    img.onload = function() {
+                        document.getElementById('preview').style.display = 'block';
+                    };
+                    img.onerror = function() {
+                        console.log('Could not load image preview');
+                    };
+                } else {
+                    document.getElementById('errorMsg').textContent = result.error;
+                    document.getElementById('error').style.display = 'block';
+                }
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('errorMsg').textContent = error.message;
+                document.getElementById('error').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
+

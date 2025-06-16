@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Pipeline - Command Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header h1 {
+            color: white;
+            font-size: 2rem;
+            font-weight: 300;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card h2 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+        
+        .status-ok { background-color: #28a745; }
+        .status-error { background-color: #dc3545; }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #333;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 1rem 0;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .form-group {
+            margin: 1rem 0;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .alert {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 AI Image Generation Pipeline - Command Center</h1>
+    </div>
+    
+    <div class="container">
+        <div class="grid">
+            <!-- System Status -->
+            <div class="card">
+                <h2>📊 System Status</h2>
+                <div class="status-grid">
+                    {% for file, exists in status.files.items() %}
+                    <div class="status-item">
+                        <span>{{ file }}</span>
+                        <span class="status-dot {{ 'status-ok' if exists else 'status-error' }}"></span>
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="status-item">
+                        <span>API Token</span>
+                        <span class="status-dot {{ 'status-ok' if status.env.REPLICATE_API_TOKEN else 'status-error' }}"></span>
+                    </div>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number">{{ status.generated_images }}</div>
+                        <div class="stat-label">Generated Images</div>
+                    </div>
+                </div>
+                
+                <button class="btn" onclick="refreshStatus()">🔄 Refresh Status</button>
+                <button class="btn btn-secondary" onclick="verifySetup()">🔧 Verify Setup</button>
+            </div>
+            
+            <!-- Pipeline Control -->
+            <div class="card">
+                <h2>🎛️ Pipeline Control</h2>
+                <p>Control the main image generation pipeline.</p>
+                
+                <button class="btn" onclick="runFullPipeline()">▶️ Run Full Pipeline</button>
+                <a href="/generate" class="btn btn-secondary">🎨 Custom Generation</a>
+                <a href="/logs" class="btn btn-secondary">📋 View Logs</a>
+                
+                <div class="loading" id="pipelineLoading">
+                    <div class="spinner"></div>
+                    <p>Running pipeline... This may take a while.</p>
+                </div>
+                
+                <div class="alert alert-success" id="pipelineSuccess">
+                    <strong>Success!</strong> Pipeline completed successfully.
+                </div>
+                
+                <div class="alert alert-error" id="pipelineError">
+                    <strong>Error!</strong> <span id="pipelineErrorMsg"></span>
+                </div>
+            </div>
+            
+            <!-- Quick Generation -->
+            <div class="card">
+                <h2>⚡ Quick Generation</h2>
+                
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" placeholder="e.g., Maldives overwater bungalow">
+                </div>
+                
+                <div class="form-group">
+                    <label for="item">Item:</label>
+                    <input type="text" id="item" placeholder="e.g., vintage Leica camera">
+                </div>
+                
+                <div class="form-group">
+                    <label for="mantra">Mantra:</label>
+                    <input type="text" id="mantra" placeholder="e.g., Honor the Path to Prosperity">
+                </div>
+                
+                <div class="form-group">
+                    <label for="platform">Platform:</label>
+                    <select id="platform">
+                        <option value="ig">Instagram (4:5)</option>
+                        <option value="tt">TikTok (9:16)</option>
+                        <option value="tw">Twitter (16:9)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="palette">Color Palette:</label>
+                    <select id="palette">
+                        <option value="A">Palette A (Warm/Luxury)</option>
+                        <option value="B">Palette B (Cool/Modern)</option>
+                    </select>
+                </div>
+                
+                <button class="btn" onclick="generateQuick()">🎨 Generate Image</button>
+                
+                <div class="loading" id="quickLoading">
+                    <div class="spinner"></div>
+                    <p>Generating image...</p>
+                </div>
+                
+                <div class="alert alert-success" id="quickSuccess">
+                    <strong>Success!</strong> Image generated: <span id="quickFilename"></span>
+                </div>
+                
+                <div class="alert alert-error" id="quickError">
+                    <strong>Error!</strong> <span id="quickErrorMsg"></span>
+                </div>
+            </div>
+            
+            <!-- Image Management -->
+            <div class="card">
+                <h2>📁 Image Management</h2>
+                <p>Organize, filter, and rank your generated images.</p>
+                
+                <div id="imageStats">
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-number" id="basePngs">-</div>
+                            <div class="stat-label">Base Folder</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="approvedImages">-</div>
+                            <div class="stat-label">Approved</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="rejectedImages">-</div>
+                            <div class="stat-label">Rejected</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="selectedImages">-</div>
+                            <div class="stat-label">Selected</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn" onclick="organizeImages()">📁 Organize Images</button>
+                <button class="btn" onclick="rankImages()">🏆 Rank Images</button>
+                <button class="btn btn-secondary" onclick="refreshImageStats()">🔄 Refresh Stats</button>
+                
+                <div class="loading" id="organizeLoading">
+                    <div class="spinner"></div>
+                    <p>Organizing and filtering images...</p>
+                </div>
+                
+                <div class="alert alert-success" id="organizeSuccess">
+                    <strong>Success!</strong> <span id="organizeSuccessMsg"></span>
+                </div>
+                
+                <div class="alert alert-error" id="organizeError">
+                    <strong>Error!</strong> <span id="organizeErrorMsg"></span>
+                </div>
+            </div>
+            
+            <!-- Video Generation -->
+            <div class="card">
+                <h2>🎬 Video Generation</h2>
+                <p>Generate videos from your best images using AI.</p>
+                
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number" id="totalVideos">-</div>
+                        <div class="stat-label">Generated Videos</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="maxVideos">Max Videos to Generate:</label>
+                    <select id="maxVideos">
+                        <option value="5">5 videos</option>
+                        <option value="10" selected>10 videos</option>
+                        <option value="15">15 videos</option>
+                        <option value="20">20 videos</option>
+                    </select>
+                </div>
+                
+                <button class="btn" onclick="generateVideos()">🎬 Generate Videos</button>
+                
+                <div class="loading" id="videoLoading">
+                    <div class="spinner"></div>
+                    <p>Generating videos... This may take several minutes.</p>
+                </div>
+                
+                <div class="alert alert-success" id="videoSuccess">
+                    <strong>Videos generated!</strong> <span id="videoSuccessMsg"></span>
+                </div>
+                
+                <div class="alert alert-error" id="videoError">
+                    <strong>Error!</strong> <span id="videoErrorMsg"></span>
+                </div>
+            </div>
+            
+            <!-- Palette Extractor -->
+            <div class="card">
+                <h2>🎨 Palette Extractor</h2>
+                <p>Upload an image to extract its color palette.</p>
+                
+                <div class="form-group">
+                    <label for="paletteFile">Upload Image:</label>
+                    <input type="file" id="paletteFile" accept="image/*">
+                </div>
+                
+                <button class="btn" onclick="extractPalette()">🔍 Extract Colors</button>
+                
+                <div class="loading" id="paletteLoading">
+                    <div class="spinner"></div>
+                    <p>Extracting palette...</p>
+                </div>
+                
+                <div class="alert alert-success" id="paletteSuccess">
+                    <strong>Palette extracted!</strong>
+                    <pre id="paletteResult"></pre>
+                </div>
+                
+                <div class="alert alert-error" id="paletteError">
+                    <strong>Error!</strong> <span id="paletteErrorMsg"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Utility functions
+        function showLoading(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+        
+        function hideLoading(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+        
+        function showAlert(id, message = '') {
+            const element = document.getElementById(id);
+            element.style.display = 'block';
+            if (message && id.includes('Error')) {
+                document.getElementById(id.replace('Error', 'ErrorMsg')).textContent = message;
+            }
+        }
+        
+        function hideAlert(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+        
+        function hideAllAlerts(prefix) {
+            hideAlert(prefix + 'Success');
+            hideAlert(prefix + 'Error');
+        }
+        
+        // API functions
+        async function refreshStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                location.reload(); // Simple reload for now
+            } catch (error) {
+                console.error('Error refreshing status:', error);
+            }
+        }
+        
+        async function verifySetup() {
+            try {
+                const response = await fetch('/api/verify-setup');
+                const data = await response.json();
+                alert(data.success ? 'Setup verification passed!' : 'Setup verification failed: ' + data.error);
+            } catch (error) {
+                alert('Error verifying setup: ' + error.message);
+            }
+        }
+        
+        async function runFullPipeline() {
+            hideAllAlerts('pipeline');
+            showLoading('pipelineLoading');
+            
+            try {
+                const response = await fetch('/api/run-pipeline', { method: 'POST' });
+                const data = await response.json();
+                
+                hideLoading('pipelineLoading');
+                
+                if (data.success) {
+                    showAlert('pipelineSuccess');
+                } else {
+                    showAlert('pipelineError', data.error);
+                }
+            } catch (error) {
+                hideLoading('pipelineLoading');
+                showAlert('pipelineError', error.message);
+            }
+        }
+        
+        async function generateQuick() {
+            hideAllAlerts('quick');
+            showLoading('quickLoading');
+            
+            const data = {
+                location: document.getElementById('location').value,
+                item: document.getElementById('item').value,
+                mantra: document.getElementById('mantra').value,
+                platform: document.getElementById('platform').value,
+                palette: document.getElementById('palette').value
+            };
+            
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                hideLoading('quickLoading');
+                
+                if (result.success) {
+                    document.getElementById('quickFilename').textContent = result.filename;
+                    showAlert('quickSuccess');
+                } else {
+                    showAlert('quickError', result.error);
+                }
+            } catch (error) {
+                hideLoading('quickLoading');
+                showAlert('quickError', error.message);
+            }
+        }
+        
+        async function extractPalette() {
+            hideAllAlerts('palette');
+            
+            const fileInput = document.getElementById('paletteFile');
+            if (!fileInput.files.length) {
+                showAlert('paletteError', 'Please select a file first');
+                return;
+            }
+            
+            showLoading('paletteLoading');
+            
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            
+            try {
+                const response = await fetch('/api/palette-extract', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                hideLoading('paletteLoading');
+                
+                if (result.success) {
+                    document.getElementById('paletteResult').textContent = result.output;
+                    showAlert('paletteSuccess');
+                } else {
+                    showAlert('paletteError', result.error);
+                }
+            } catch (error) {
+                hideLoading('paletteLoading');
+                showAlert('paletteError', error.message);
+            }
+        }
+        
+        // Image Management Functions
+        async function refreshImageStats() {
+            try {
+                const response = await fetch('/api/image-stats');
+                const stats = await response.json();
+                
+                document.getElementById('basePngs').textContent = stats.base_pngs || 0;
+                document.getElementById('approvedImages').textContent = stats.approved || 0;
+                document.getElementById('rejectedImages').textContent = stats.rejected || 0;
+                document.getElementById('selectedImages').textContent = stats.selected_for_video || 0;
+                document.getElementById('totalVideos').textContent = stats.total_videos || 0;
+            } catch (error) {
+                console.error('Error refreshing image stats:', error);
+            }
+        }
+        
+        async function organizeImages() {
+            hideAllAlerts('organize');
+            showLoading('organizeLoading');
+            
+            try {
+                const response = await fetch('/api/organize-images', { method: 'POST' });
+                const result = await response.json();
+                
+                hideLoading('organizeLoading');
+                
+                if (result.success) {
+                    showAlert('organizeSuccess');
+                    document.getElementById('organizeSuccessMsg').textContent = 'Images organized and filtered successfully!';
+                    refreshImageStats();
+                } else {
+                    showAlert('organizeError', result.error);
+                }
+            } catch (error) {
+                hideLoading('organizeLoading');
+                showAlert('organizeError', error.message);
+            }
+        }
+        
+        async function rankImages() {
+            hideAllAlerts('organize');
+            showLoading('organizeLoading');
+            
+            try {
+                const response = await fetch('/api/rank-images', { method: 'POST' });
+                const result = await response.json();
+                
+                hideLoading('organizeLoading');
+                
+                if (result.success) {
+                    showAlert('organizeSuccess');
+                    document.getElementById('organizeSuccessMsg').textContent = 'Images ranked and selected for video creation!';
+                    refreshImageStats();
+                } else {
+                    showAlert('organizeError', result.error);
+                }
+            } catch (error) {
+                hideLoading('organizeLoading');
+                showAlert('organizeError', error.message);
+            }
+        }
+        
+        async function generateVideos() {
+            hideAllAlerts('video');
+            showLoading('videoLoading');
+            
+            const maxVideos = document.getElementById('maxVideos').value;
+            
+            try {
+                const response = await fetch('/api/generate-videos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ max_videos: parseInt(maxVideos) })
+                });
+                
+                const result = await response.json();
+                hideLoading('videoLoading');
+                
+                if (result.success) {
+                    showAlert('videoSuccess');
+                    document.getElementById('videoSuccessMsg').textContent = `Videos generated successfully!`;
+                    refreshImageStats();
+                } else {
+                    showAlert('videoError', result.error);
+                }
+            } catch (error) {
+                hideLoading('videoLoading');
+                showAlert('videoError', error.message);
+            }
+        }
+        
+        // Load image stats on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshImageStats();
+        });
+    </script>
+</body>
+</html>
+
