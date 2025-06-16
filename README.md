@@ -378,6 +378,10 @@ done
 
 ```
 .
+├── images/                   # All generated assets live here
+│   ├── *_A_ig_watermarked.png    # Instagram images with Palette A
+│   ├── *_B_tt_watermarked.png    # TikTok images with Palette B  
+│   └── *_*_tw_watermarked.png    # Twitter images (all palettes)
 ├── gon.sh                    # Main orchestration script (150 themes × 2 palettes × 3 platforms)
 ├── palette_extractor.py      # Color extraction module with K-means clustering
 ├── prompt_builder.py         # Brand-aware prompt engineering with palette injection

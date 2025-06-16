@@ -70,9 +70,16 @@ def get_system_status():
         'REPLICATE_API_TOKEN': bool(os.getenv('REPLICATE_API_TOKEN'))
     }
     
-    # Count generated images
-    png_files = len([f for f in os.listdir('.') if f.endswith('.png')])
-    status['generated_images'] = png_files
+    # Count generated images in images directory - updated to use proper images/ path patterns
+    from pathlib import Path
+    images_dir = Path('images')
+    if images_dir.exists():
+        png_files = len(list(images_dir.glob('*.png')))
+        jpg_files = len(list(images_dir.glob('*.jpg'))) + len(list(images_dir.glob('*.jpeg')))
+        total_files = png_files + jpg_files
+    else:
+        total_files = 0
+    status['generated_images'] = total_files
     
     return status
 
@@ -244,7 +251,8 @@ def api_image_stats():
         
         images_dir = Path('images')
         stats = {
-            'base_pngs': len(list(Path('.').glob('*.png'))),
+            # Updated to use proper images/ directory patterns
+            'base_pngs': len(list(images_dir.glob('*.png'))) if images_dir.exists() else 0,
             'pending': 0,
             'approved': 0,
             'rejected': 0,
@@ -253,6 +261,7 @@ def api_image_stats():
         }
         
         if images_dir.exists():
+            # Updated patterns for subdirectories within images/
             stats['pending'] = len(list((images_dir / 'pending').glob('*.png'))) if (images_dir / 'pending').exists() else 0
             stats['approved'] = len(list((images_dir / 'approved').glob('*.png'))) if (images_dir / 'approved').exists() else 0
             stats['rejected'] = len(list((images_dir / 'rejected').glob('*.png'))) if (images_dir / 'rejected').exists() else 0

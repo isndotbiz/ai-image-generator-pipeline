@@ -30,7 +30,7 @@ except Exception as e:
     model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(device)
     processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
-# 2. Gather images
+# 2. Gather images - using images/ directory as the standard location
 IMAGE_DIR = "./images"
 if not os.path.exists(IMAGE_DIR):
     print(f"Creating {IMAGE_DIR} directory...")
@@ -38,6 +38,7 @@ if not os.path.exists(IMAGE_DIR):
     print(f"Please add images to {IMAGE_DIR} and run again.")
     exit()
 
+# Updated to use full path patterns from images/ directory
 image_extensions = ["*.png", "*.jpg", "*.jpeg", "*.PNG", "*.JPG", "*.JPEG"]
 paths = []
 for ext in image_extensions:

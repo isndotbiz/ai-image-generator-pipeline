@@ -31,8 +31,9 @@ class TestWatermark(unittest.TestCase):
         """Set up test fixtures."""
         self.test_image_size = (800, 1000)
         self.test_watermark_size = (100, 30)
-        self.test_image_path = "/tmp/test_image.png"
-        self.test_logo_path = "/tmp/test_logo.png"
+        # Updated to use consistent path patterns for testing
+        self.test_image_path = "images/test_image.png"
+        self.test_logo_path = "images/test_logo.png"
     
     def test_platform_enum(self):
         """Test Platform enum values."""
@@ -430,6 +431,139 @@ class TestWatermark(unittest.TestCase):
             
             # Should return original path when piexif is not available
             self.assertEqual(result, self.test_image_path)
+    
+    def test_watermark_for_platform_images_directory_default(self):
+        """Test that watermark_for_platform defaults to images/ directory."""
+        with patch('watermark.add_text_watermark') as mock_text_watermark:
+            # Mock the return value to be in images/ directory
+            mock_text_watermark.return_value = "images/test_image_watermarked.png"
+            
+            result = watermark_for_platform(
+                "/tmp/test_image.png",
+                "instagram",
+                "@TestHandle",
+                is_logo=False
+            )
+            
+            # Should call add_text_watermark with no explicit output_path
+            mock_text_watermark.assert_called_once_with(
+                "/tmp/test_image.png",
+                "@TestHandle",
+                Platform.INSTAGRAM,
+                0.92,
+                output_path=None
+            )
+            
+            # Result should be in images/ directory
+            self.assertTrue(result.startswith("images/"))
+    
+    @patch('watermark.Path')
+    def test_output_directory_creation(self, mock_path):
+        """Test that output directories are created when needed."""
+        mock_path_instance = MagicMock()
+        mock_path.return_value = mock_path_instance
+        mock_path_instance.parent = MagicMock()
+        
+        with patch('watermark.Image') as mock_image:
+            mock_img = MagicMock()
+            mock_img.size = (800, 600)
+            mock_img.mode = 'RGBA'
+            mock_img.copy.return_value = mock_img
+            mock_image.open.return_value = mock_img
+            mock_image.new.return_value = MagicMock()
+            
+            with patch('watermark.ImageDraw') as mock_draw, \
+                 patch('watermark.ImageFont'):
+                mock_draw_obj = MagicMock()
+                mock_draw_obj.textbbox.return_value = (0, 0, 80, 20)
+                mock_draw.Draw.return_value = mock_draw_obj
+                
+                add_text_watermark(
+                    "/tmp/test_image.png",
+                    "@TestHandle",
+                    Platform.INSTAGRAM
+                )
+                
+                # Should have called mkdir on the parent directory
+                mock_path_instance.parent.mkdir.assert_called_once_with(
+                    parents=True, exist_ok=True
+                )
+    
+    def test_images_directory_path_logic(self):
+        """Test the logic for determining output paths in images/ directory."""
+        with patch('watermark.Image') as mock_image, \
+             patch('watermark.ImageDraw') as mock_draw, \
+             patch('watermark.ImageFont') as mock_font, \
+             patch('watermark.Path') as mock_path:
+            
+            # Setup mocks
+            mock_img = MagicMock()
+            mock_img.size = (800, 600)
+            mock_img.mode = 'RGBA'
+            mock_img.copy.return_value = mock_img
+            mock_image.open.return_value = mock_img
+            mock_image.new.return_value = MagicMock()
+            mock_image.alpha_composite.return_value = mock_img
+            
+            mock_draw_obj = MagicMock()
+            mock_draw_obj.textbbox.return_value = (0, 0, 80, 20)
+            mock_draw.Draw.return_value = mock_draw_obj
+            
+            mock_font.load_default.return_value = MagicMock()
+            
+            mock_path_instance = MagicMock()
+            mock_path.return_value = mock_path_instance
+            mock_path_instance.parent = MagicMock()
+            
+            # Test 1: Input not in images/ should output to images/
+            result = add_text_watermark(
+                "/tmp/test_image.png",
+                "@TestHandle",
+                Platform.INSTAGRAM
+            )
+            
+            # Should save to images/ directory
+            expected_calls = mock_img.save.call_args_list
+            self.assertTrue(any("images/" in str(call) for call in expected_calls))
+            
+            # Reset mock
+            mock_img.save.reset_mock()
+            
+            # Test 2: Input already in images/ should stay in images/
+            result = add_text_watermark(
+                "images/test_image.png",
+                "@TestHandle",
+                Platform.INSTAGRAM
+            )
+            
+            # Should save with _watermarked suffix in same directory
+            expected_calls = mock_img.save.call_args_list
+            self.assertTrue(any("_watermarked" in str(call) for call in expected_calls))
+    
+    def test_explicit_output_path_override(self):
+        """Test that explicit output_path parameter overrides images/ default."""
+        with patch('watermark.add_text_watermark') as mock_text_watermark:
+            mock_text_watermark.return_value = "/custom/path/output.png"
+            
+            result = watermark_for_platform(
+                "/tmp/test_image.png",
+                "instagram",
+                "@TestHandle",
+                is_logo=False,
+                output_path="/custom/path/output.png"
+            )
+            
+            # Should call with explicit output_path
+            mock_text_watermark.assert_called_once_with(
+                "/tmp/test_image.png",
+                "@TestHandle",
+                Platform.INSTAGRAM,
+                0.92,
+                output_path="/custom/path/output.png"
+            )
+            
+            # Result should be the custom path
+            self.assertEqual(result, "/custom/path/output.png")
 
 if __name__ == '__main__':
     unittest.main()

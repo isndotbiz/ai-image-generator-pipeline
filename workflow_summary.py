@@ -18,12 +18,16 @@ def main():
     print("🚀 COMPLETE AI IMAGE-TO-VIDEO PIPELINE STATUS")
     print("=" * 50)
     
-    # Step 1: Check image collection
+    # Step 1: Check image collection - updated to use images/ directory consistently
     print_header("STEP 1: Image Collection")
     image_dir = Path("./images")
     if image_dir.exists():
-        image_count = len(list(image_dir.glob("*.png"))) + len(list(image_dir.glob("*.jpg")))
-        print(f"✅ Images directory: {image_count} images found")
+        # Updated patterns to check for PNG and JPG files within images/ directory
+        png_count = len(list(image_dir.glob("*.png")))
+        jpg_count = len(list(image_dir.glob("*.jpg")))
+        jpeg_count = len(list(image_dir.glob("*.jpeg")))
+        image_count = png_count + jpg_count + jpeg_count
+        print(f"✅ Images directory: {image_count} images found (PNG: {png_count}, JPG/JPEG: {jpg_count + jpeg_count})")
     else:
         print("❌ Images directory not found")
     

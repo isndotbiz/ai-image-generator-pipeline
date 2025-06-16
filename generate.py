@@ -6,6 +6,7 @@ Image generation utilities that wrap Replicate API calls.
 import sys
 import os
 import requests
+from pathlib import Path
 from typing import Optional, Dict, Any
 
 try:
@@ -13,6 +14,9 @@ try:
 except ImportError:
     print("Error: replicate module not found. Please install with: pip install replicate")
     sys.exit(1)
+
+# Default directory for saving images
+DEFAULT_IMG_DIR = Path("images")
 
 def generate_image(prompt: str, aspect_ratio: str = "4:5", 
                   negative_prompt: Optional[str] = None,
@@ -56,6 +60,7 @@ def generate_image(prompt: str, aspect_ratio: str = "4:5",
 def download_image(url: str, output_path: str) -> bool:
     """
     Download an image from a URL to a local file.
+    Creates parent directories if they don't exist.
     
     Args:
         url: URL of the image to download
@@ -67,6 +72,10 @@ def download_image(url: str, output_path: str) -> bool:
     try:
         response = requests.get(url, timeout=30)
         response.raise_for_status()
+        
+        # Create parent directories if they don't exist
+        output_path_obj = Path(output_path)
+        output_path_obj.parent.mkdir(parents=True, exist_ok=True)
         
         with open(output_path, "wb") as f:
             f.write(response.content)
@@ -86,10 +95,11 @@ def generate_and_save(prompt: str, output_path: str,
                      model: str = "black-forest-labs/flux-1.1-pro") -> bool:
     """
     Generate an image and save it to a local file.
+    If output_path lacks path separators, saves to the default images directory.
     
     Args:
         prompt: The generation prompt
-        output_path: Local path to save the image
+        output_path: Local path to save the image (if no path separators, saves to images/)
         aspect_ratio: Image aspect ratio
         negative_prompt: Optional negative prompt
         model: Replicate model to use
@@ -97,6 +107,11 @@ def generate_and_save(prompt: str, output_path: str,
     Returns:
         True if successful, False otherwise
     """
+    # Check if output_path lacks path separators, if so prepend default directory
+    path_obj = Path(output_path)
+    if len(path_obj.parts) == 1:  # Only filename, no path separators
+        output_path = str(DEFAULT_IMG_DIR / output_path)
+    
     # Generate the image
     url = generate_image(prompt, aspect_ratio, negative_prompt, model)
     if not url:
@@ -182,6 +197,11 @@ if __name__ == "__main__":
     output_path = sys.argv[2]
     aspect_ratio = sys.argv[3] if len(sys.argv) > 3 else "4:5"
     negative_prompt = sys.argv[4] if len(sys.argv) > 4 else None
+    
+    # Check if output_path lacks path separators, if so prepend default directory
+    path_obj = Path(output_path)
+    if len(path_obj.parts) == 1:  # Only filename, no path separators
+        output_path = str(DEFAULT_IMG_DIR / output_path)
     
     try:
         success = generate_and_save(prompt, output_path, aspect_ratio, negative_prompt)

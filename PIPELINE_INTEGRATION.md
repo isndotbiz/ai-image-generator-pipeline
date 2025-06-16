@@ -16,14 +16,15 @@ The `gon.sh` pipeline has been successfully updated to integrate:
 - **Twitter (tw)**: 16:9 aspect ratio, top-right watermark
 
 ### 🏷️ File Naming Convention
+All generated assets are stored in the `images/` directory:
 ```
-${slug}_${paletteID}_${platform}.png
+images/${slug}_${paletteID}_${platform}.png
 ```
 
 Examples:
-- `maldives_vintage_1_A_ig.png`
-- `london_platinum_13_B_tt.png`
-- `paris_silk_22_A_tw.png`
+- `images/maldives_vintage_1_A_ig.png`
+- `images/london_platinum_13_B_tt.png`
+- `images/paris_silk_22_A_tw.png`
 
 ### ⚡ Pipeline Flow
 For each theme:
@@ -39,8 +40,8 @@ For each theme:
 
 ### 🔄 Process Chain
 1. **Prompt Building**: `prompt_builder.py` injects palette colors into prompts
-2. **Image Generation**: `generate.py` calls Replicate API with enhanced prompts
-3. **Watermarking**: `watermark.py` applies platform-specific @GON watermarks
+2. **Image Generation**: `generate.py` calls Replicate API with enhanced prompts and saves to `images/` directory
+3. **Watermarking**: `watermark.py` applies platform-specific @GON watermarks to images in `images/` directory
 
 ### 📊 Output Scale
 - **150 themes** × **2 palettes** × **3 platforms** = **900 total images**

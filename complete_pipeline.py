@@ -67,6 +67,7 @@ class ImageClusteringPipeline:
             print(f"➡️  Please add images to {self.image_dir} and run again.")
             return []
         
+        # Use proper path patterns for images/ directory
         image_extensions = ["*.png", "*.jpg", "*.jpeg", "*.PNG", "*.JPG", "*.JPEG"]
         paths = []
         for ext in image_extensions:

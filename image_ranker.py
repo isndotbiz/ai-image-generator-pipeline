@@ -198,7 +198,7 @@ class ImageRanker:
             }
     
     def rank_all_approved_images(self):
-        """Rank all images in the approved folder"""
+        """Rank all images in the approved folder - uses images/approved/ pattern"""
         approved_images = list(self.approved_dir.glob("*.png"))
         rankings = []
         
@@ -345,7 +345,7 @@ class ImageRanker:
         return len(common_parts) / total_unique_parts
     
     def get_stats(self):
-        """Get current statistics"""
+        """Get current statistics - uses proper images/ subdirectory patterns"""
         stats = {
             'approved': len(list(self.approved_dir.glob("*.png"))),
             'selected_for_video': len(list(self.selected_dir.glob("*.png"))),

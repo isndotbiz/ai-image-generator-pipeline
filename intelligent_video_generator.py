@@ -291,7 +291,7 @@ class IntelligentVideoGenerator:
         return {r['filename']: r for r in rankings}
     
     def generate_videos_from_selected(self, max_videos=10):
-        """Generate videos from selected high-quality images"""
+        """Generate videos from selected high-quality images - uses images/selected_for_video/ pattern"""
         selected_images = list(self.selected_dir.glob("*.png"))
         
         if not selected_images:
@@ -349,7 +349,7 @@ class IntelligentVideoGenerator:
         return results
     
     def get_stats(self):
-        """Get video generation statistics"""
+        """Get video generation statistics - uses proper images/ subdirectory patterns"""
         video_files = list(self.video_outputs_dir.glob("*.mp4"))
         result_files = list(self.video_outputs_dir.glob("video_generation_results_*.json"))
         

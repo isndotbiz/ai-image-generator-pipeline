@@ -30,6 +30,7 @@ Requirements:
 
 import sys
 import os
+from pathlib import Path
 from typing import Optional, Tuple, Dict, Any
 from enum import Enum
 
@@ -139,7 +140,15 @@ def add_logo_watermark(image_path: str, logo_path: str, platform: Platform = Pla
         # Determine output path
         if output_path is None:
             base, ext = os.path.splitext(image_path)
-            output_path = f"{base}_watermarked{ext}"
+            basename = os.path.basename(base)
+            # Place in images/ directory if not already there
+            if not image_path.startswith('images/'):
+                output_path = f"images/{basename}_watermarked{ext}"
+            else:
+                output_path = f"{base}_watermarked{ext}"
+        
+        # Ensure output directory exists
+        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
         
         # Save the watermarked image
         watermarked.save(output_path, quality=95)
@@ -233,7 +242,15 @@ def add_text_watermark(image_path: str, text: str, platform: Platform = Platform
         # Determine output path
         if output_path is None:
             base, ext = os.path.splitext(image_path)
-            output_path = f"{base}_watermarked{ext}"
+            basename = os.path.basename(base)
+            # Place in images/ directory if not already there
+            if not image_path.startswith('images/'):
+                output_path = f"images/{basename}_watermarked{ext}"
+            else:
+                output_path = f"{base}_watermarked{ext}"
+        
+        # Ensure output directory exists
+        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
         
         # Save the watermarked image
         watermarked.save(output_path, quality=95)
@@ -291,6 +308,9 @@ def add_metadata(image_path: str, metadata: dict, output_path: Optional[str] = N
         if output_path is None:
             output_path = image_path
         
+        # Ensure output directory exists
+        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+        
         # Save with metadata
         from PIL import Image
         img = Image.open(image_path)
@@ -314,10 +334,10 @@ def watermark_for_platform(image_path: str, platform_name: str,
         watermark_content: Text content or path to logo file
         is_logo: True if watermark_content is a logo file path, False for text
         opacity: Watermark opacity (default 0.92 as specified)
-        output_path: Optional output path
+        output_path: Optional output path (if None, defaults to images/ directory)
         
     Returns:
-        Path to the watermarked image
+        Path to the watermarked image (in images/ directory unless explicitly overridden)
     """
     # Convert platform name to enum
     platform_map = {
@@ -328,6 +348,9 @@ def watermark_for_platform(image_path: str, platform_name: str,
     }
     
     platform = platform_map.get(platform_name.lower(), Platform.GENERIC)
+    
+    # If no output_path is specified, ensure it goes in images/ directory
+    # The individual watermark functions handle this logic
     
     if is_logo:
         return add_logo_watermark(image_path, watermark_content, platform, opacity, output_path=output_path)

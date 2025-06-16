@@ -3,6 +3,12 @@ set -e
 # Requires: pip3 install replicate requests piexif
 # Remember: export REPLICATE_API_TOKEN="YOUR_TOKEN"
 
+# Images directory configuration
+IMAGES_DIR="images"
+
+# Ensure images directory exists
+mkdir -p "$IMAGES_DIR"
+
 # Function to generate a single image using modular helpers
 gen() {
     local location="$1"
@@ -13,7 +19,7 @@ gen() {
     local platform="$6"
     local palette_id="$7"
     
-    local outfile="${slug}_${palette_id}_${platform}.png"
+    local outfile="${IMAGES_DIR}/${slug}_${palette_id}_${platform}.png"
     
     # Build the prompt using prompt_builder.py with palette injection
     local prompt_output=$(python3 prompt_builder.py "$location" "$item" "$mantra" "$aspect_ratio" "$palette_id")

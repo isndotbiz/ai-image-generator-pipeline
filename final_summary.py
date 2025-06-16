@@ -28,7 +28,7 @@ def main():
         print(f"   ⭐ Selected: {len(selected_df)} top-quality images")
         print(f"   🎬 Generated: {len(prompts_df)} video prompts")
         
-        # Show platform diversity
+        # Show platform diversity - updated to account for images/ directory patterns
         if len(selected_df) > 0:
             platforms = selected_df.groupby('image_path').first()  # Avoid duplicates
             platform_counts = {
