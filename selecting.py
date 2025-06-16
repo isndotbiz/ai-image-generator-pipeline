@@ -1,3 +1,4 @@
+#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 top_images = []
 for c in range(k):
     idxs = [i for i, lab in enumerate(labels) if lab==c]

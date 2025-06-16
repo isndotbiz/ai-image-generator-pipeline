@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 
 # Runway Gen-4 Setup Script
 echo "🎬 Runway Gen-4 Video Generation Setup"

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 """
 Image Organizer and Quality Filter
 Moves images to organized folders and filters out low-quality images

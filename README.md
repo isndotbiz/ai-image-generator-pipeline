@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/License-Professional-blue.svg)](#license)
 [![Platform Support](https://img.shields.io/badge/Platforms-Instagram%20%7C%20TikTok%20%7C%20Twitter-ff69b4.svg)](#platform-support)
 [![AI Model](https://img.shields.io/badge/AI%20Model-Flux%201.1%20Pro-orange.svg)](https://replicate.com/black-forest-labs/flux-1.1-pro)
-[![Watermark](https://img.shields.io/badge/Watermark-%40FORTUNA__BOUND-gold.svg)](#watermarking-system)
+[![Watermark](https://img.shields.io/badge/Watermark-Logo%20Based-gold.svg)](#watermarking-system)
 
 > **A sophisticated, enterprise-grade image generation pipeline that creates premium branded content using AI models with advanced color intelligence, automated multi-platform optimization, and intelligent watermarking.**
 
@@ -14,7 +14,7 @@
 - **Zero-Error Production Pipeline**: Robust error handling with automatic retry mechanisms
 - **Advanced Color Intelligence**: K-means clustering for scientifically-optimized color extraction
 - **Multi-Platform Mastery**: Instagram, TikTok, Twitter optimization with platform-specific watermarking
-- **Brand Consistency**: @FORTUNA_BOUND watermarking with 92% opacity professional branding
+- **Brand Consistency**: Logo-based watermarking with 92% opacity professional branding
 - **A/B Testing Ready**: Dual palette system for performance optimization
 - **Production Deployment**: Full CI/CD integration with version control and tagging
 
@@ -138,33 +138,43 @@ python3 generate.py "Professional product photography: luxury office, golden wat
 
 #### 4. Multi-Platform Watermarking
 ```bash
-# Instagram watermark (bottom-right positioning)
-python3 watermark.py "luxury_watch_ig.png" "@YourBrand" "instagram"
+# Logo watermarking for different platforms
+python3 watermark.py "luxury_watch_ig.png" "logo.png" "instagram" --logo
+python3 watermark.py "luxury_watch_tiktok.png" "logo.png" "tiktok" --logo
+python3 watermark.py "luxury_watch_twitter.png" "logo.png" "twitter" --logo
 
-# TikTok watermark (mid-left positioning, avoiding caption area)
-python3 watermark.py "luxury_watch_tiktok.png" "@YourBrand" "tiktok"
-
-# Twitter watermark (top-right positioning)
-python3 watermark.py "luxury_watch_twitter.png" "@YourBrand" "twitter"
-
-# Logo watermarking
-python3 watermark.py "image.png" "logo.png" "instagram" --logo
+# Text watermarking (alternative)
+python3 watermark.py "image.png" "@YourBrand" "instagram"
 ```
 
 ### Production Pipeline Setup
 
+#### ⚠️ **IMPORTANT: Environment Activation Required**
+
+**Before running any scripts, you MUST activate the menv environment:**
+
+```bash
+# ALWAYS run this first!
+source ~/menv/bin/activate
+```
+
+**All executable scripts have been configured to automatically activate the menv environment, but manual activation is still recommended for interactive use.**
+
 #### Environment Configuration
 ```bash
-# 1. Set up API credentials
+# 1. Activate the menv environment (REQUIRED)
+source ~/menv/bin/activate
+
+# 2. Set up API credentials
 export REPLICATE_API_TOKEN="r8_your_actual_token_here"
 
-# 2. Install all dependencies
+# 3. Install all dependencies
 pip3 install replicate requests pillow scikit-learn numpy piexif
 
 # Alternative: use requirements file
 pip3 install -r requirements.txt
 
-# 3. Verify setup
+# 4. Verify setup
 python3 verify_setup.py
 ```
 
@@ -206,7 +216,7 @@ while IFS='|' read -r location item mantra slug; do
       # Generate with custom pipeline
       python3 prompt_builder.py "$location" "$item" "$mantra" "$aspect_ratio" "$palette" > prompt.txt
       python3 generate.py "$(grep '^Prompt:' prompt.txt | sed 's/^Prompt: //')" "${slug}_${palette}_${platform}.png" "$aspect_ratio"
-      python3 watermark.py "${slug}_${palette}_${platform}.png" "@YourBrand" "$platform"
+      python3 watermark.py "${slug}_${palette}_${platform}.png" "logo.png" "$platform" --logo
     done
   done
 done < custom_themes.txt
@@ -230,8 +240,43 @@ diff <(python3 prompt_builder.py "modern studio" "luxury briefcase" "Build Your 
 ## Configuration
 
 ### Environment Variables
+
+#### Required Variables
 - `REPLICATE_API_TOKEN` - Required for image generation via Replicate API
 - `PYTHONPATH` - Optional: Add project directory to Python path for imports
+
+#### Smartproxy Environment Variables (for curl + Smartproxy usage)
+
+When using curl commands with Smartproxy service (as per user preferences), configure these environment variables:
+
+```bash
+# Smartproxy authentication credentials
+export SMARTPROXY_USERNAME="your_smartproxy_username"
+export SMARTPROXY_PASSWORD="your_smartproxy_password"
+export SMARTPROXY_AUTH_TOKEN="your_smartproxy_basic_auth_token"
+
+# Optional proxy configuration
+export HTTP_PROXY="http://your-proxy:port"
+export HTTPS_PROXY="https://your-proxy:port"
+```
+
+**Usage Example with curl + Smartproxy:**
+```bash
+# Using Smartproxy with curl for API requests
+curl -x gate.smartproxy.com:10000 \
+     -U "$SMARTPROXY_USERNAME:$SMARTPROXY_PASSWORD" \
+     -H "Authorization: Basic $SMARTPROXY_AUTH_TOKEN" \
+     "https://api.example.com/endpoint"
+
+# Or using the smartproxy_utils.py helper
+python3 -c "from smartproxy_utils import make_proxied_request; print(make_proxied_request('https://httpbin.org/ip').json())"
+```
+
+**Environment Variables Reference:**
+- `SMARTPROXY_USERNAME` - Your Smartproxy username for authentication
+- `SMARTPROXY_PASSWORD` - Your Smartproxy password for authentication  
+- `SMARTPROXY_AUTH_TOKEN` - Basic auth token for API access
+- `HTTP_PROXY` / `HTTPS_PROXY` - Optional proxy URLs for system-wide proxy configuration
 
 ### Dependencies
 Install all required dependencies:
@@ -424,92 +469,6 @@ When contributing to this codebase:
 4. **Test thoroughly**: Verify changes work with different palettes and platforms
 5. **Update documentation**: Keep README and inline comments current
 
-## 🔄 Production Journey: Watermark Correction & Regeneration
-
-This project underwent a comprehensive production correction process, demonstrating enterprise-level quality control and rapid response capabilities.
-
-### The Challenge
-On June 13, 2025, approximately 208 images were generated with incorrect `@GON` watermarks instead of the correct `@FORTUNA_BOUND` brand identifier. This required immediate correction to maintain brand consistency.
-
-### The Solution: 8-Step Recovery Process
-
-#### Step 1: Issue Identification
-```bash
-# Identified watermark discrepancy in production images
-grep -n "@GON" gon.sh
-# Result: Line 35 contained incorrect watermark parameter
-```
-
-#### Step 2: Code Correction
-```bash
-# Fixed watermark parameter in generation script
-sed -i 's/@GON/@FORTUNA_BOUND/g' gon.sh
-# Updated documentation to reflect correct branding
-```
-
-#### Step 3: Impact Assessment
-```bash
-# Non-destructive file identification with temporal filtering
-find . -type f -name "*.png" -newermt "2025-06-13" ! -newermt "2025-06-14" | tee /tmp/jun13_pngs.txt
-wc -l /tmp/jun13_pngs.txt  # Confirmed 208 affected files
-```
-
-#### Step 4: Safe Cleanup
-```bash
-# Surgical removal of incorrect images using precise temporal criteria
-find . -type f -name "*.png" -newermt "2025-06-13" ! -newermt "2025-06-14" -delete
-# Verification: 0 files remaining with incorrect watermarks
-```
-
-#### Step 5: Configuration Validation
-```bash
-# Verified correct watermark configuration
-grep -n "@FORTUNA_BOUND" gon.sh
-# Result: Line 35 confirmed correct @FORTUNA_BOUND parameter
-```
-
-#### Step 6: Full Regeneration
-```bash
-# Complete pipeline regeneration with correct branding
-time ./gon.sh > regenerate.log 2>&1
-# Generated: 223 files with proper @FORTUNA_BOUND watermarks
-```
-
-#### Step 7: Quality Assurance
-```bash
-# Random sampling verification across platforms
-for f in $(ls *_ig_watermarked.png | sort -R | head -3); do open "$f"; done
-# OCR verification: tesseract confirmed @FORTUNA_BOUND presence
-```
-
-#### Step 8: Production Deployment
-```bash
-# Version control integration with comprehensive tagging
-git add *.png regenerate.log
-git commit -m "Regenerated images with correct @FORTUNA_BOUND watermark after Jun13 cleanup"
-git push --set-upstream origin main
-git tag regen-fortuna-bound-2025-06-13
-git push --tags
-```
-
-### Key Metrics from Correction Process
-
-| Metric | Value | Impact |
-|--------|-------|--------|
-| **Response Time** | < 30 minutes | Rapid issue resolution |
-| **Files Affected** | 208 images | Precise impact scope |
-| **Files Regenerated** | 223 images | Complete brand compliance |
-| **Zero Downtime** | 100% uptime | Continuous service delivery |
-| **Quality Assurance** | 3-platform verification | Multi-channel validation |
-| **Version Control** | Full audit trail | Enterprise traceability |
-
-### Lessons Learned & Best Practices
-
-1. **Temporal Precision**: Used exact date filtering for surgical file operations
-2. **Non-Destructive Testing**: Always verify with dry-run before deletion
-3. **Quality Gates**: Multi-step verification including OCR validation
-4. **Version Control**: Comprehensive tagging and audit trails
-5. **Automated Recovery**: Scripted regeneration for consistent results
 
 ## 🚀 Production Deployment Guide
 
@@ -571,7 +530,7 @@ echo "Estimated API calls: $(($(ls *.png | wc -l) / 2))"
 
 ### Quality Metrics
 
-- **Brand Consistency**: 100% @FORTUNA_BOUND compliance
+- **Brand Consistency**: 100% logo watermark compliance
 - **Color Accuracy**: K-means clustering with 95% color fidelity
 - **Aspect Ratio Precision**: Perfect platform optimization
 - **Watermark Positioning**: Platform-specific placement accuracy
@@ -606,7 +565,7 @@ pip3 install -r requirements.txt --upgrade
 
 ```bash
 # Semantic versioning for releases
-git tag -a v1.0.0 -m "Production release with @FORTUNA_BOUND branding"
+git tag -a v1.0.0 -m "Production release with logo branding"
 git tag -a v1.1.0 -m "Enhanced watermarking and error handling"
 git tag -a v1.2.0 -m "Advanced color intelligence and A/B testing"
 

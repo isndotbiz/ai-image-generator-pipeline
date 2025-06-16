@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 """
 AI Image Generation Pipeline - Web Command Center
 A Flask-based web interface for controlling the AI image generation pipeline.

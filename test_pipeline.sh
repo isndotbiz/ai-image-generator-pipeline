@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 # Test script to validate the integrated pipeline without actual image generation
 set -e
 

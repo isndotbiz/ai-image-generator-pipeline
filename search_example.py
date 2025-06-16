@@ -1,3 +1,4 @@
+#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 import pickle
 import numpy as np
 from FAISS import load_index, search_similar_images, load_embeddings

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 
 # Daily Palette Rotation Script
 # This script can be run daily via cron to update A/B palettes

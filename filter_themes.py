@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 """
 Theme Compliance Filter
 Scans THEMES block for problematic content and outputs cleansed version.

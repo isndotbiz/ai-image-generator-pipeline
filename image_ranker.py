@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 """
 Image Ranking System
 Ranks approved images based on quality metrics and selects best candidates for video creation

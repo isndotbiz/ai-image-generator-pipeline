@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 set -e
 # Requires: pip3 install replicate requests piexif
 # Remember: export REPLICATE_API_TOKEN="YOUR_TOKEN"
@@ -37,8 +37,8 @@ gen() {
             *) platform_name="generic" ;;
         esac
         
-        # Apply watermark using watermark.py
-        local watermarked_file=$(python3 watermark.py "$outfile" "@GON" "$platform_name")
+        # Apply logo watermark using watermark.py
+        local watermarked_file=$(python3 watermark.py "$outfile" "Fortuna_Bound_Watermark.png" "$platform_name" --logo)
         echo "Successfully generated and watermarked: $watermarked_file"
     else
         echo "Failed to generate $outfile"

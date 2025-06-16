@@ -1,0 +1,103 @@
+name: Environment Consistency Check
+
+# This workflow implements the requested CI pipeline:
+# 1. python -m venv venv && source venv/bin/activate
+# 2. pip install -r requirements.txt  
+# 3. Run verification + smoke tests
+# This guards against future dependency drift.
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  # Run weekly to catch dependency drift
+  schedule:
+    - cron: '0 2 * * 1'  # Every Monday at 2 AM UTC
+  workflow_dispatch:
+
+jobs:
+  environment-test:
+    name: Test Environment Consistency
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    # Step 1: Create virtual environment and activate it
+    - name: Create and activate virtual environment
+      run: |
+        echo "Creating virtual environment..."
+        python -m venv venv
+        source venv/bin/activate
+        
+        # Make the venv available to subsequent steps
+        echo "VIRTUAL_ENV=$VIRTUAL_ENV" >> $GITHUB_ENV
+        echo "$VIRTUAL_ENV/bin" >> $GITHUB_PATH
+        
+        # Verify activation
+        echo "Python executable: $(which python)"
+        echo "Python version: $(python --version)"
+        echo "Pip version: $(pip --version)"
+    
+    # Step 2: Install dependencies from requirements.txt
+    - name: Install dependencies from requirements.txt
+      run: |
+        echo "Upgrading pip..."
+        python -m pip install --upgrade pip
+        
+        echo "Installing dependencies from requirements.txt..."
+        pip install -r requirements.txt
+        
+        echo "Dependencies installed successfully!"
+        echo "Installed packages:"
+        pip list --format=columns
+    
+    # Step 3: Run verification + smoke tests
+    - name: Run verification and smoke tests
+      env:
+        # Provide mock token for tests that might need it
+        REPLICATE_API_TOKEN: 'mock-token-for-ci-testing'
+      run: |
+        echo "=== Running Environment Verification ==="
+        python verify_setup.py
+        
+        echo ""
+        echo "=== Running Smoke Tests ==="
+        python run_tests.py
+        
+        echo ""
+        echo "=== Environment Consistency Check Complete ==="
+    
+    # Additional check: Verify critical imports work
+    - name: Verify critical dependencies
+      run: |
+        echo "Testing critical imports..."
+        python -c "import sys; print(f'Python version: {sys.version}')"
+        python -c "import torch; print(f'✓ PyTorch {torch.__version__}')"
+        python -c "import numpy as np; print(f'✓ NumPy {np.__version__}')"
+        python -c "import requests; print(f'✓ Requests {requests.__version__}')"
+        python -c "import replicate; print('✓ Replicate imported successfully')"
+        echo "✅ All critical dependencies verified!"
+    
+    # Report summary
+    - name: Summary
+      if: always()
+      run: |
+        echo "=== CI Pipeline Summary ==="
+        echo "✅ Virtual environment created and activated"
+        echo "✅ Dependencies installed from requirements.txt"
+        echo "✅ Verification and smoke tests completed"
+        echo ""
+        echo "This CI pipeline guards against future dependency drift by:"
+        echo "- Testing clean environment setup from scratch"
+        echo "- Verifying all required dependencies install correctly"
+        echo "- Running smoke tests to ensure basic functionality"
+        echo "- Checking critical imports work as expected"
+

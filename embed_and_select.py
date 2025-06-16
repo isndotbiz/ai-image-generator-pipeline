@@ -1,3 +1,4 @@
+#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 from PIL import Image
 import torch
 import glob

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 
 # Upload script template with Smartproxy integration
 # Usage: ./upload.sh <file_path> [target_url]

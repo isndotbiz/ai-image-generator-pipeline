@@ -1,3 +1,4 @@
+#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 import numpy as np
 
 cluster_centers = km.centroids  # shape (k, 512)
