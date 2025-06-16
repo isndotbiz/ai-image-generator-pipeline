@@ -86,9 +86,9 @@ class ImageClusteringPipeline:
             if filename.endswith('_tw.png'):
                 platform = 'Twitter'
                 base_name = filename[:-7]
-            elif filename.endswith('_tiktok.png'):
+            elif filename.endswith('_tt.png'):
                 platform = 'TikTok'
-                base_name = filename[:-11]
+                base_name = filename[:-7]
             elif filename.endswith('_ig.png'):
                 platform = 'Instagram'
                 base_name = filename[:-7]

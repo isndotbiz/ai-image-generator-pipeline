@@ -37,9 +37,9 @@ def extract_image_info(image_paths):
         if filename.endswith('_tw.png'):
             platform = 'Twitter'
             base_name = filename[:-7]  # Remove '_tw.png'
-        elif filename.endswith('_tiktok.png'):
+        elif filename.endswith('_tt.png'):
             platform = 'TikTok'
-            base_name = filename[:-11]  # Remove '_tiktok.png'
+            base_name = filename[:-7]  # Remove '_tt.png'
         elif filename.endswith('_ig.png'):
             platform = 'Instagram'
             base_name = filename[:-7]  # Remove '_ig.png'
