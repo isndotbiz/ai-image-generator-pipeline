@@ -1,0 +1,57 @@
+{
+  "timestamp": "2025-06-16T13:33:23.119131",
+  "total_videos": 5,
+  "source_rankings": "images/image_rankings_20250616_133108.json",
+  "videos": [
+    {
+      "video_id": "video_01",
+      "source_image": "maldives_handcrafted_92_ig_watermarked.png",
+      "score": 0.8084765282564891,
+      "theme": "Luxury Handcrafted Items",
+      "style": "Elegant slow zoom with golden particles",
+      "duration": "4 seconds",
+      "output_filename": "fortuna_bound_video_01_20250616.mp4",
+      "prompt": "Create a cinematic elegant slow zoom with golden particles showcasing luxury handcrafted items, professional commercial style"
+    },
+    {
+      "video_id": "video_02",
+      "source_image": "singapore_handcraftedPersianrug_73_ig_watermarked.png",
+      "score": 0.8059056870609927,
+      "theme": "Premium Textiles & Materials",
+      "style": "Smooth rotation with fabric-like motion",
+      "duration": "4 seconds",
+      "output_filename": "fortuna_bound_video_02_20250616.mp4",
+      "prompt": "Create a cinematic smooth rotation with fabric-like motion showcasing premium textiles & materials, professional commercial style"
+    },
+    {
+      "video_id": "video_03",
+      "source_image": "dubai_handcrafted_64_ig_watermarked.png",
+      "score": 0.7773660844720539,
+      "theme": "Artisan Craftsmanship",
+      "style": "Cinematic pan with warm lighting effects",
+      "duration": "4 seconds",
+      "output_filename": "fortuna_bound_video_03_20250616.mp4",
+      "prompt": "Create a cinematic cinematic pan with warm lighting effects showcasing artisan craftsmanship, professional commercial style"
+    },
+    {
+      "video_id": "video_04",
+      "source_image": "new_Exoticsportscar_176_ig_watermarked.png",
+      "score": 0.7267013914111506,
+      "theme": "Exotic Vehicles & Transportation",
+      "style": "Dynamic motion with speed blur effects",
+      "duration": "4 seconds",
+      "output_filename": "fortuna_bound_video_04_20250616.mp4",
+      "prompt": "Create a cinematic dynamic motion with speed blur effects showcasing exotic vehicles & transportation, professional commercial style"
+    },
+    {
+      "video_id": "video_05",
+      "source_image": "sydney_handcraftedPersianrug_236_ig_watermarked.png",
+      "score": 0.7209348214285619,
+      "theme": "Interior Design & Architecture",
+      "style": "Architectural walkthrough with depth effects",
+      "duration": "4 seconds",
+      "output_filename": "fortuna_bound_video_05_20250616.mp4",
+      "prompt": "Create a cinematic architectural walkthrough with depth effects showcasing interior design & architecture, professional commercial style"
+    }
+  ]
+}

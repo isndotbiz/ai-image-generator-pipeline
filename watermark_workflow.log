@@ -1,0 +1,7 @@
+[2025-06-16 21:10:14] INFO: === STARTING FULL WATERMARK WORKFLOW ===
+[2025-06-16 21:10:14] INFO: Starting watermark application process
+[2025-06-16 21:10:14] INFO: Watermarked 0 images
+[2025-06-16 21:10:14] INFO: Starting cleanup of non-watermarked images
+[2025-06-16 21:10:14] INFO: Cleaned up 0 non-watermarked images
+[2025-06-16 21:10:14] INFO: Checking git sync status
+[2025-06-16 21:10:15] ERROR: Workflow error: 'images/approved/test_output_watermarked.png' is not in the subpath of '/Users/jonathanmallinger/Dev'
