@@ -1,26 +1,53 @@
 #!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
 """
 AI Image Generation Pipeline - Web Command Center
-A Flask-based web interface for controlling the AI image generation pipeline.
+Optimized Flask-based web interface with automatic watermarking integration.
 """
 
 import os
 import subprocess
 import json
+import threading
+import time
 from datetime import datetime
+from pathlib import Path
+from functools import lru_cache
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 
-app = Flask(__name__)
-app.secret_key = 'ai-pipeline-secret-key-change-this'
+# Import our watermarking pipeline
+try:
+    from auto_watermark_workflow import WatermarkWorkflow
+    from pipeline_integration import AutoWatermarkPipeline
+    WATERMARK_AVAILABLE = True
+except ImportError:
+    print("Warning: Watermarking modules not available")
+    WATERMARK_AVAILABLE = False
 
-# Configuration
+app = Flask(__name__)
+app.secret_key = 'fortuna-bound-ai-pipeline-2024'
+
+# Optimized Configuration
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024  # 32MB max file size
+app.config['TEMPLATES_AUTO_RELOAD'] = False  # Disable in production
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 300  # 5 minutes cache
 
-# Ensure upload directory exists
+# Thread pool for background tasks
+from concurrent.futures import ThreadPoolExecutor
+executor = ThreadPoolExecutor(max_workers=3)
+
+# Initialize watermarking pipeline
+if WATERMARK_AVAILABLE:
+    watermark_pipeline = AutoWatermarkPipeline()
+else:
+    watermark_pipeline = None
+
+# Ensure directories exist
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs('images', exist_ok=True)
+os.makedirs('video_outputs', exist_ok=True)
 
 # Helper Functions
 def run_command(command, cwd=None):
