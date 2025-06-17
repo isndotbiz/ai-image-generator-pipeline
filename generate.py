@@ -8,6 +8,10 @@ import os
 import requests
 from pathlib import Path
 from typing import Optional, Dict, Any
+from logging_config import get_logger
+
+# Initialize logger
+logger = get_logger(__name__)
 
 try:
     import replicate
@@ -35,6 +39,7 @@ def generate_image(prompt: str, aspect_ratio: str = "4:5",
     Returns:
         URL of the generated image, or None if failed
     """
+    logger.info(f"Generating image with prompt: {prompt[:100]}...")
     try:
         # Prepare input parameters
         input_params = {
@@ -45,16 +50,20 @@ def generate_image(prompt: str, aspect_ratio: str = "4:5",
         
         if negative_prompt:
             input_params["negative_prompt"] = negative_prompt
+            logger.debug(f"Using negative prompt: {negative_prompt}")
+        
+        logger.debug(f"Using model: {model}, aspect_ratio: {aspect_ratio}")
         
         # Run the model
         result = replicate.run(model, input=input_params)
         
         # Convert result to string URL
         url = str(result)
+        logger.info(f"Successfully generated image, URL: {url}")
         return url
         
     except Exception as e:
-        print(f"Error generating image: {e}")
+        logger.error(f"Error generating image: {e}")
         return None
 
 def download_image(url: str, output_path: str) -> bool:
@@ -69,6 +78,7 @@ def download_image(url: str, output_path: str) -> bool:
     Returns:
         True if successful, False otherwise
     """
+    logger.debug(f"Downloading image from {url} to {output_path}")
     try:
         response = requests.get(url, timeout=30)
         response.raise_for_status()
@@ -80,13 +90,14 @@ def download_image(url: str, output_path: str) -> bool:
         with open(output_path, "wb") as f:
             f.write(response.content)
         
+        logger.info(f"Successfully downloaded image to {output_path}")
         return True
         
     except requests.RequestException as e:
-        print(f"Error downloading image: {e}")
+        logger.error(f"Error downloading image: {e}")
         return False
     except Exception as e:
-        print(f"Error saving image: {e}")
+        logger.error(f"Error saving image: {e}")
         return False
 
 def generate_and_save(prompt: str, output_path: str, 
@@ -135,13 +146,13 @@ def handle_generation_errors(error: Exception, output_path: str) -> None:
     error_str = str(error)
     
     if "NSFW" in error_str:
-        print(f"Skipped {output_path} - Content filter triggered")
+        logger.warning(f"Skipped {output_path} - Content filter triggered")
     elif "rate limit" in error_str.lower():
-        print(f"Rate limited for {output_path} - please wait and retry")
+        logger.warning(f"Rate limited for {output_path} - please wait and retry")
     elif "token" in error_str.lower() or "auth" in error_str.lower():
-        print(f"Authentication error for {output_path} - check REPLICATE_API_TOKEN")
+        logger.error(f"Authentication error for {output_path} - check REPLICATE_API_TOKEN")
     else:
-        print(f"Error generating {output_path}: {error}")
+        logger.error(f"Error generating {output_path}: {error}")
 
 def check_api_token() -> bool:
     """
@@ -152,9 +163,10 @@ def check_api_token() -> bool:
     """
     token = os.getenv("REPLICATE_API_TOKEN")
     if not token:
-        print("Error: REPLICATE_API_TOKEN environment variable not set")
-        print("Please set it with: export REPLICATE_API_TOKEN=\"your_token_here\"")
+        logger.error("REPLICATE_API_TOKEN environment variable not set")
+        logger.error("Please set it with: export REPLICATE_API_TOKEN=\"your_token_here\"")
         return False
+    logger.debug("API token configured")
     return True
 
 def batch_generate(prompts_and_paths: list, aspect_ratio: str = "4:5",

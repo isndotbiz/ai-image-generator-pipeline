@@ -1,0 +1,26 @@
+[
+  {
+    "task_id": "c14da48b-554d-402f-b054-cddcae90e842",
+    "image_path": "video_queue/elegant_business_classic_tt_draft.png",
+    "prompt": "soft focus transition, elegant reveal, professional cinematography, TikTok vertical engagement, no text changes, maintain original composition, professional quality, stable objects",
+    "target_filename_stub": "elegant_business_classic_tt_video",
+    "timestamp": "2025-06-17T06:07:40.737130",
+    "status": "PENDING"
+  },
+  {
+    "task_id": "b18b4487-9a0f-42e8-8576-d6a279d3f749",
+    "image_path": "video_queue/image_visual_content_tt_draft_01.png",
+    "prompt": "calm atmospheric movement, premium lighting, stable composition, TikTok vertical engagement, no text changes, maintain original composition, professional quality, stable objects",
+    "target_filename_stub": "image_visual_content_tt_video",
+    "timestamp": "2025-06-17T06:07:44.358891",
+    "status": "PENDING"
+  },
+  {
+    "task_id": "33f4f379-10e8-4b7d-9471-f225e139c01a",
+    "image_path": "video_queue/elegant_business_wellness_tt_draft_01.png",
+    "prompt": "calm atmospheric movement, premium lighting, stable composition, TikTok vertical engagement, no text changes, maintain original composition, professional quality, stable objects",
+    "target_filename_stub": "elegant_business_wellness_tt_video",
+    "timestamp": "2025-06-17T06:07:47.484693",
+    "status": "PENDING"
+  }
+]

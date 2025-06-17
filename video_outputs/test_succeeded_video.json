@@ -1,0 +1,20 @@
+{
+  "video_file": "test_succeeded_video.mp4",
+  "download_timestamp": "2025-06-17T04:05:41.127630",
+  "input_path": "video_queue/test_succeeded.png",
+  "prompt": "Test successful task",
+  "seed": null,
+  "runway_task_json": {
+    "task_id": "f645e2df-b639-4264-9bf2-fc7bceb6c658",
+    "final_status": "SUCCEEDED",
+    "completion_time": "2025-06-17T04:01:58.639450",
+    "video_url": "https://dnznrvs05pmza.cloudfront.net/0f3b0be2-a946-4f3f-b6af-4fc0bdbfeca4.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiYWY0M2ZkZjhmZjAyMjE1MCIsImJ1Y2tldCI6InJ1bndheS10YXNrLWFydGlmYWN0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc1MDI5MTIwMH0.w6xEQC7cUbiYdqQPGKnEm1qQFE0xqyZtgLK1-RtJ8-A",
+    "original_status": "PENDING",
+    "timestamp": "2025-06-17T04:00:00.000000"
+  },
+  "target_filename_stub": "test_succeeded_video",
+  "file_info": {
+    "size_bytes": 941873,
+    "size_mb": 0.9
+  }
+}

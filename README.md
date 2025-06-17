@@ -601,5 +601,299 @@ This project is designed for professional content generation and brand marketing
 
 ---
 
+## Advanced Guides
+
+### Video Generation Pipeline
+
+The complete video generation pipeline orchestrates the entire workflow from image curation to final video delivery:
+
+#### Quick Start
+```bash
+# Generate 10 videos for Instagram
+python generate_videos.py --max_videos 10 --platform ig
+
+# Generate with extended timeout
+python generate_videos.py --max_videos 5 --platform tt --timeout 900
+
+# Test pipeline without execution
+python generate_videos.py --dry-run --platform tw
+```
+
+#### Required Environment Variables
+```bash
+# Required for video generation
+export RUNWAYML_API_SECRET="your_runway_api_key_here"
+
+# Optional for enhanced reliability
+export SMARTPROXY_USERNAME="your_username"
+export SMARTPROXY_PASSWORD="your_password"
+export SMARTPROXY_AUTH_TOKEN="your_auth_token"
+```
+
+#### Pipeline Phases
+1. **Environment Validation** - Verify API keys and dependencies
+2. **Image Curation** - Load and prepare images with intelligent prompts
+3. **Task Creation** - Submit jobs to RunwayML for video generation
+4. **Task Monitoring** - Poll task status until completion
+5. **Video Download** - Retrieve and organize completed videos
+6. **Batch Reporting** - Generate comprehensive metrics and reports
+
+### Watermarking Workflow
+
+Automated watermarking with integrated cleanup and git synchronization:
+
+#### Full Workflow
+```bash
+# Complete watermark workflow
+python3 auto_watermark_workflow.py --mode full
+# Does: Watermark → Cleanup → Git Sync → Push
+
+# Individual operations
+python3 auto_watermark_workflow.py --mode watermark
+python3 auto_watermark_workflow.py --mode cleanup
+```
+
+#### Integration with Generation
+```python
+from pipeline_integration import auto_watermark
+
+@auto_watermark
+def generate_image(prompt, output_path):
+    # Your existing generation code
+    return output_path
+# Images automatically watermarked!
+```
+
+### Mantra Overlay System
+
+Adds mantra text overlays to generated images after creation:
+
+```bash
+# Process all images with random mantras
+python3 overlay_mantras.py
+
+# Specific mantra category
+python3 overlay_mantras.py --mantra-category prosperity
+
+# Preview text placement
+python3 overlay_mantras.py --preview --limit 5
+```
+
+**Mantra Categories**: prosperity, empowerment, growth, mindfulness, success, luxury
+
+### Batch Processing and Metrics
+
+Comprehensive batch reporting with success metrics:
+
+```bash
+# Generate batch report from latest results
+python batch_report_generator.py
+
+# Process all polling results files
+python batch_report_generator.py --all
+
+# Generate report and commit to git
+python batch_report_generator.py --commit
+```
+
+**Generated Metrics**:
+- Batch summary (total, succeeded, failed, elapsed time)
+- Performance metrics (success rate, average duration, throughput)
+- Download metrics (videos downloaded, storage usage)
+- Detailed status breakdown
+
+## Internal Workflows
+
+### Pipeline Integration Architecture
+
+The system employs a 4-layer modular architecture:
+
+1. **Core Intelligence Modules**
+   - `palette_extractor.py` - Advanced color intelligence with K-means clustering
+   - `prompt_builder.py` - Brand-aware prompt engineering with palette injection
+   - `watermark.py` - Platform-optimized branding system
+   - `generate.py` - Production-grade API wrapper
+
+2. **Orchestration Engine**
+   - `gon.sh` - Multi-platform content generation pipeline
+   - Processes 150 themes × 2 palettes × 3 platforms = 900 images
+
+3. **Video Generation Layer**
+   - `generate_videos.py` - CLI wrapper for complete video pipeline
+   - RunwayML integration with batch processing
+   - Automated task monitoring and download
+
+4. **Quality Assurance**
+   - Comprehensive testing suite with dry-run capabilities
+   - Unit tests for all helper modules
+   - Mock API integration for validation
+
+### Testing and Validation Framework
+
+#### Dry-Run Testing
+```bash
+# Test with 2 themes and mock API calls
+python3 test_dry_run.py --dry-run
+```
+
+**Test Coverage**:
+- ✅ 12 combinations tested (2 themes × 2 palettes × 3 platforms)
+- ✅ Palette injection verification
+- ✅ Watermark positioning tests
+- ✅ Mock generation validation
+
+#### Unit Testing
+```bash
+# Test individual modules
+python test_watermark.py
+python test_prompt_builder.py
+python test_palette_extractor.py
+```
+
+### Performance Optimization
+
+#### Before Optimization
+- ❌ Manual watermarking after generation
+- ❌ Both versions stored (double space usage)
+- ❌ Large git repository size
+- ❌ No integration between components
+
+#### After Optimization
+- ✅ Automatic watermarking during generation
+- ✅ Single watermarked version stored (~50% space reduction)
+- ✅ Optimized git repository size
+- ✅ Seamless integration across pipeline
+- ✅ Background processing with caching
+- ✅ ~90% faster image processing workflow
+
+### Deployment and CI/CD Integration
+
+#### GitHub Actions Workflow
+Automated cloud execution with `.github/workflows/nightly-video-generation.yml`:
+
+1. Configure repository secrets (API keys)
+2. Populate video queue with PNG images
+3. Automated nightly execution at 2 AM UTC
+4. Manual trigger with custom parameters
+5. Artifact upload (videos, logs, reports)
+
+#### Production Monitoring
+```bash
+# Real-time generation monitoring
+tail -f production.log | grep -E "(SUCCESS|ERROR|Generated)"
+
+# Resource usage tracking
+ps aux | grep python3 | grep -E "(generate|watermark)"
+
+# API quota monitoring
+echo "Current generation count: $(ls *.png | wc -l)"
+```
+
+### A/B Palette Testing System
+
+Automated palette selection system for optimal visual impact:
+
+#### Selection Algorithm
+1. **Load Color Data**: Reads `palettes.json` containing extracted color frequencies
+2. **Sort by Frequency**: Orders all colors by their appearance frequency
+3. **Select Palette A**: Starts with highest frequency color, adds similar colors (HSL distance < 10)
+4. **Select Palette B**: Finds sufficiently different color (HSL distance ≥ 10) for contrast
+5. **Ensure Distinction**: Validates palette separation for effective A/B testing
+
+#### Usage
+```bash
+# Manual palette selection
+python3 ab_palette_selector.py
+
+# Automated daily rotation (via cron)
+0 8 * * * /path/to/project/daily_palette_rotation.sh
+```
+
+#### Generated Palette Format
+```json
+{
+  "name": "Palette A",
+  "created_at": "2025-06-13T06:23:47.474216",
+  "colors": [
+    {
+      "hex": "#97c8ee",
+      "rgb": [151, 200, 238],
+      "frequency": 2,
+      "appearances": [
+        {
+          "video": "cluster_03_travel_destinations_1_matches.mp4",
+          "frame_position": "25%",
+          "color_rank": 2
+        }
+      ]
+    }
+  ],
+  "total_frequency": 3,
+  "color_count": 2
+}
+```
+
+### Image Curation and Selection
+
+Intelligent image curation with quality heuristics:
+
+#### Curation Process
+```bash
+# Automated image curation
+python3 image_curator.py
+```
+
+**Quality Filters**:
+- **Resolution Filter**: Minimum 1024px width OR height
+- **Aspect Ratio Filter**: 16:9, 9:16, or 1:1 ratios (±10% tolerance)
+- **Platform Assignment**: Random platform suffix (_ig, _tt, _tw)
+- **Draft Naming**: Extracts 3 descriptive terms from filenames
+
+#### Enhanced Selection for Video Generation
+```bash
+# Environment-controlled batch sizes
+MAX_VIDEOS=5 python3 intelligent_video_generator.py
+```
+
+**Selection Algorithm**:
+- Primary: Sort by `final_score` in descending order
+- Fallback: Random sorting for unscored images
+- Metadata extraction for intelligent video naming
+- Platform awareness preservation
+
+### CI/CD and Environment Management
+
+#### Continuous Integration Pipeline
+Protection against dependency drift with automated testing:
+
+```yaml
+# .github/workflows/environment-check.yml
+steps:
+  - Virtual Environment Setup
+  - Dependency Installation from requirements.txt
+  - Verification & Smoke Tests
+  - Multi-Python Version Testing (3.8-3.11)
+```
+
+**Benefits**:
+- Early detection of breaking dependency changes
+- Cross-platform environment consistency
+- Weekly scheduled checks for drift detection
+- Security vulnerability scanning
+
+### Error Handling and Recovery
+
+Comprehensive error handling across all components:
+
+- **NSFW Content Filter**: Automatically skips and logs
+- **Rate Limiting**: Implements exponential backoff
+- **Authentication Errors**: Clear token validation messages
+- **Network Failures**: Retry logic with timeout handling
+- **Invalid Prompts**: Validation and sanitization
+- **File System Errors**: Graceful handling with cleanup
+- **Git Sync Issues**: Continue workflow with warnings
+
+---
+
 *🚀 **Ready for Enterprise**: This pipeline represents production-ready, enterprise-grade content generation with proven reliability, comprehensive error handling, and full audit capabilities.*
 

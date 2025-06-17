@@ -17,7 +17,7 @@ from werkzeug.utils import secure_filename
 
 # Import robust output system
 try:
-    from robust_output import log_safe, generate_descriptive_filename, workflow_manager
+    from robust_output import log_safe, generate_descriptive_filename, workflow_manager, filename_generator
     ROBUST_OUTPUT_AVAILABLE = True
 except ImportError:
     ROBUST_OUTPUT_AVAILABLE = False
@@ -25,6 +25,7 @@ except ImportError:
     def generate_descriptive_filename(prompt="", platform="ig", descriptors=None): 
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         return f"image_{timestamp}_{platform}.png"
+    filename_generator = None
 
 # Import our watermarking pipeline
 try:
@@ -64,12 +65,16 @@ os.makedirs('video_outputs', exist_ok=True)
 def run_command(command, cwd=None):
     """Execute a command and return the result"""
     try:
+        # Create environment with current environment plus any missing vars
+        env = os.environ.copy()
+        
         result = subprocess.run(
             command, 
             shell=True, 
             capture_output=True, 
             text=True, 
             cwd=cwd or os.getcwd(),
+            env=env,
             timeout=300  # 5 minute timeout
         )
         return {
@@ -312,6 +317,46 @@ def api_generate_videos():
     result = run_command(cmd)
     return jsonify(result)
 
+@app.route('/api/generate-video-filename-stub', methods=['POST'])
+def api_generate_video_filename_stub():
+    """Generate video filename stub for Step 6: descriptor1_descriptor2_descriptor3{platform_suffix}_{YYYYMMDD_HHMMSS}"""
+    try:
+        data = request.get_json() or {}
+        image_path = data.get('image_path', '')
+        platform = data.get('platform', 'ig')
+        
+        if not image_path:
+            return jsonify({'success': False, 'error': 'image_path is required'})
+        
+        if ROBUST_OUTPUT_AVAILABLE:
+            # Use the Step 6 implementation
+            filename_stub = filename_generator.generate_video_filename_stub(image_path, platform)
+            log_safe(f"Generated video filename stub: {filename_stub}")
+            
+            return jsonify({
+                'success': True,
+                'filename_stub': filename_stub,
+                'video_filename': f"{filename_stub}.mp4",
+                'platform': platform,
+                'image_path': image_path
+            })
+        else:
+            # Fallback implementation
+            timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+            platform_suffix = {'ig': '_ig', 'fb': '_fb', 'tw': '_tw', 'tt': '_tt'}.get(platform, '_ig')
+            filename_stub = f"video{platform_suffix}_{timestamp}"
+            
+            return jsonify({
+                'success': True,
+                'filename_stub': filename_stub,
+                'video_filename': f"{filename_stub}.mp4",
+                'platform': platform,
+                'image_path': image_path
+            })
+            
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
 @app.route('/api/image-stats')
 def api_image_stats():
     """Get image organization statistics"""
@@ -432,8 +477,8 @@ def api_generate_direct():
         
         # Generate image using enhanced prompt
         import shlex
-        generate_args = ['python3', 'generate.py', enhanced_prompt, full_path, aspect_ratio]
-        generate_cmd = ' '.join(shlex.quote(arg) for arg in generate_args)
+        api_token = os.getenv('REPLICATE_API_TOKEN', '')
+        generate_cmd = f'REPLICATE_API_TOKEN={shlex.quote(api_token)} python3 generate.py {shlex.quote(enhanced_prompt)} {shlex.quote(full_path)} {shlex.quote(aspect_ratio)}'
         generate_result = run_command(generate_cmd)
         
         if not generate_result['success']:
@@ -489,5 +534,5 @@ def api_generate_direct():
 if __name__ == '__main__':
     print("Starting AI Image Generation Pipeline Command Center...")
     print("Access the web interface at: http://localhost:8080")
-    app.run(debug=True, host='0.0.0.0', port=8080)
+    app.run(debug=False, host='0.0.0.0', port=8080)
 

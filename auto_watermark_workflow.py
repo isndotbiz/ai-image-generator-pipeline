@@ -26,6 +26,7 @@ import json
 from pathlib import Path
 from typing import List, Dict, Set
 from datetime import datetime
+from logging_config import get_logger
 
 # Import our watermarking functions
 try:
@@ -40,16 +41,7 @@ class WatermarkWorkflow:
         self.watermark_path = watermark_path
         self.images_dir = Path(images_dir)
         self.platform = Platform.GENERIC
-        self.log_file = "watermark_workflow.log"
-        
-    def log(self, message: str, level="INFO"):
-        """Log messages with timestamp"""
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        log_msg = f"[{timestamp}] {level}: {message}"
-        print(log_msg)
-        
-        with open(self.log_file, "a") as f:
-            f.write(log_msg + "\n")
+        self.logger = get_logger(__name__ + ".WatermarkWorkflow")
     
     def find_images(self, include_watermarked=True) -> List[Path]:
         """Find all image files in the images directory"""
@@ -74,12 +66,12 @@ class WatermarkWorkflow:
                                   capture_output=True, text=True, check=True)
             return set(result.stdout.strip().split("\n"))
         except subprocess.CalledProcessError:
-            self.log("Warning: Could not get git tracked files", "WARN")
+            self.logger.warning("Could not get git tracked files")
             return set()
     
     def watermark_new_images(self) -> List[str]:
         """Apply watermarks to images that don't have them yet"""
-        self.log("Starting watermark application process")
+        self.logger.info("Starting watermark application process")
         
         # Find non-watermarked images
         all_images = self.find_images(include_watermarked=True)
@@ -105,7 +97,7 @@ class WatermarkWorkflow:
         watermarked_files = []
         for img_path in images_to_watermark:
             try:
-                self.log(f"Watermarking: {img_path}")
+                self.logger.info(f"Watermarking: {img_path}")
                 result_path = add_logo_watermark(
                     str(img_path), 
                     self.watermark_path, 
@@ -114,16 +106,16 @@ class WatermarkWorkflow:
                     scale_factor=0.15
                 )
                 watermarked_files.append(result_path)
-                self.log(f"✓ Watermarked: {result_path}")
+                self.logger.info(f"✓ Watermarked: {result_path}")
             except Exception as e:
-                self.log(f"✗ Error watermarking {img_path}: {e}", "ERROR")
+                self.logger.error(f"✗ Error watermarking {img_path}: {e}")
         
-        self.log(f"Watermarked {len(watermarked_files)} images")
+        self.logger.info(f"Watermarked {len(watermarked_files)} images")
         return watermarked_files
     
     def cleanup_non_watermarked(self) -> List[str]:
         """Remove non-watermarked images locally and from git"""
-        self.log("Starting cleanup of non-watermarked images")
+        self.logger.info("Starting cleanup of non-watermarked images")
         
         # Find non-watermarked images
         non_watermarked = self.find_images(include_watermarked=False)
@@ -142,29 +134,29 @@ class WatermarkWorkflow:
                 has_watermarked_version = any(Path(wm).exists() for wm in watermarked_variants)
                 
                 if has_watermarked_version:
-                    self.log(f"Removing non-watermarked: {img_path}")
+                    self.logger.info(f"Removing non-watermarked: {img_path}")
                     
                     # Remove from git if tracked
                     try:
                         subprocess.run(["git", "rm", str(img_path)], 
                                      capture_output=True, check=True)
-                        self.log(f"✓ Removed from git: {img_path}")
+                        self.logger.info(f"✓ Removed from git: {img_path}")
                     except subprocess.CalledProcessError:
                         # File might not be tracked, just remove locally
                         img_path.unlink()
-                        self.log(f"✓ Removed locally: {img_path}")
+                        self.logger.info(f"✓ Removed locally: {img_path}")
                     
                     removed_files.append(str(img_path))
                     
             except Exception as e:
-                self.log(f"✗ Error removing {img_path}: {e}", "ERROR")
+                self.logger.error(f"✗ Error removing {img_path}: {e}")
         
-        self.log(f"Cleaned up {len(removed_files)} non-watermarked images")
+        self.logger.info(f"Cleaned up {len(removed_files)} non-watermarked images")
         return removed_files
     
     def check_git_sync(self) -> Dict[str, any]:
         """Check git sync status and identify cleanup opportunities"""
-        self.log("Checking git sync status")
+        self.logger.info("Checking git sync status")
         
         sync_info = {
             "local_changes": [],
@@ -212,13 +204,13 @@ class WatermarkWorkflow:
                         sync_info["untracked_images"].append(abs_path)
             
         except subprocess.CalledProcessError as e:
-            self.log(f"Git sync check failed: {e}", "ERROR")
+            self.logger.error(f"Git sync check failed: {e}")
         
         return sync_info
     
     def sync_and_cleanup_remote(self, force=False) -> bool:
         """Sync changes and cleanup remote repository"""
-        self.log("Starting git sync and remote cleanup")
+        self.logger.info("Starting git sync and remote cleanup")
         
         try:
             # Add all watermarked images
@@ -232,24 +224,24 @@ class WatermarkWorkflow:
                 # Commit changes
                 commit_msg = f"Automated watermark workflow - {datetime.now().strftime('%Y-%m-%d %H:%M')}"
                 subprocess.run(["git", "commit", "-m", commit_msg], check=True)
-                self.log("✓ Committed watermark changes")
+                self.logger.info("✓ Committed watermark changes")
                 
                 # Push changes
                 subprocess.run(["git", "push"], check=True)
-                self.log("✓ Pushed changes to remote")
+                self.logger.info("✓ Pushed changes to remote")
                 
                 return True
             else:
-                self.log("No changes to commit")
+                self.logger.info("No changes to commit")
                 return False
                 
         except subprocess.CalledProcessError as e:
-            self.log(f"Git sync failed: {e}", "ERROR")
+            self.logger.error(f"Git sync failed: {e}")
             return False
     
     def run_full_workflow(self) -> Dict[str, any]:
         """Run the complete watermarking and cleanup workflow"""
-        self.log("=== STARTING FULL WATERMARK WORKFLOW ===")
+        self.logger.info("=== STARTING FULL WATERMARK WORKFLOW ===")
         
         results = {
             "watermarked_files": [],
@@ -272,11 +264,11 @@ class WatermarkWorkflow:
             # Step 4: Sync to remote
             results["git_synced"] = self.sync_and_cleanup_remote()
             
-            self.log("=== WORKFLOW COMPLETED SUCCESSFULLY ===")
+            self.logger.info("=== WORKFLOW COMPLETED SUCCESSFULLY ===")
             
         except Exception as e:
             error_msg = f"Workflow error: {e}"
-            self.log(error_msg, "ERROR")
+            self.logger.error(error_msg)
             results["errors"].append(error_msg)
         
         return results

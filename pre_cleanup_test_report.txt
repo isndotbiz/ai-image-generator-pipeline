@@ -1,0 +1,805 @@
+....EE.....FF..FFFFFFF................F.......FF.FFF..........FF........ [100%]
+==================================== ERRORS ====================================
+___________________ ERROR at setup of test_palette_injection ___________________
+file /Users/jonathanmallinger/Dev/test_dry_run.py, line 71
+  def test_palette_injection(palette_id: str, theme: Dict[str, Any]) -> Dict[str, Any]:
+E       fixture 'palette_id' not found
+>       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/jonathanmallinger/Dev/test_dry_run.py:71
+_________________ ERROR at setup of test_watermark_positioning _________________
+file /Users/jonathanmallinger/Dev/test_dry_run.py, line 120
+  def test_watermark_positioning(platform_config: Dict[str, Any], mock_image_path: str = None) -> Dict[str, Any]:
+E       fixture 'platform_config' not found
+>       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/jonathanmallinger/Dev/test_dry_run.py:120
+=================================== FAILURES ===================================
+_____________________________ test_image_selection _____________________________
+Expected None, but test returned [{'image_path': PosixPath('video_queue/image_visual_content_ig_draft_03.png'), 'filename': 'image_visual_content_ig_draft_03.png', 'descriptor_tokens': 'image_visual_content', 'platform_suffix': 'ig', 'ranking_data': {}, 'final_score': 0}, {'image_path': PosixPath('video_queue/image_visual_content_tw_draft_02.png'), 'filename': 'image_visual_content_tw_draft_02.png', 'descriptor_tokens': 'image_visual_content', 'platform_suffix': 'tw', 'ranking_data': {}, 'final_score': 0}, {'image_path': PosixPath('video_queue/elegant_luxury_business_tw_draft_02.png'), 'filename': 'elegant_luxury_business_tw_draft_02.png', 'descriptor_tokens': 'elegant_luxury_business', 'platform_suffix': 'tw', 'ranking_data': {}, 'final_score': 0}, {'image_path': PosixPath('video_queue/image_visual_content_ig_draft_08.png'), 'filename': 'image_visual_content_ig_draft_08.png', 'descriptor_tokens': 'image_visual_content', 'platform_suffix': 'ig', 'ranking_data': {}, 'final_score': 0}, {'image_path': PosixPath('video_queue/image_visual_content_ig_draft_06.png'), 'filename': 'image_visual_content_ig_draft_06.png', 'descriptor_tokens': 'image_visual_content', 'platform_suffix': 'ig', 'ranking_data': {}, 'final_score': 0}]. Did you mean to use `assert` instead of `return`?
+----------------------------- Captured stdout call -----------------------------
+Found 68 images in video_queue/
+Loading ranking data from: images/image_rankings_20250617_025821.json
+Loaded ranking data for 3 images
+
+🎬 Selected 5 images for video generation (max: 5)
+
+Selection Results:
+================================================================================
+ 1. image_visual_content_ig_draft_03.png
+    Score: 0.0000
+    Platform: ig
+    Descriptor: image_visual_content
+    Has ranking data: No
+
+ 2. image_visual_content_tw_draft_02.png
+    Score: 0.0000
+    Platform: tw
+    Descriptor: image_visual_content
+    Has ranking data: No
+
+ 3. elegant_luxury_business_tw_draft_02.png
+    Score: 0.0000
+    Platform: tw
+    Descriptor: elegant_luxury_business
+    Has ranking data: No
+
+ 4. image_visual_content_ig_draft_08.png
+    Score: 0.0000
+    Platform: ig
+    Descriptor: image_visual_content
+    Has ranking data: No
+
+ 5. image_visual_content_ig_draft_06.png
+    Score: 0.0000
+    Platform: ig
+    Descriptor: image_visual_content
+    Has ranking data: No
+
+_______________________ test_image_selection_with_scores _______________________
+Expected None, but test returned [{'image_path': PosixPath('video_queue/elegant_business_wellness_tt_draft_01.png'), 'filename': 'elegant_business_wellness_tt_draft_01.png', 'descriptor_tokens': 'elegant_business_wellness', 'platform_suffix': 'tt', 'ranking_data': {'filename': 'elegant_business_wellness_tt_draft_01.png', 'final_score': 0.9249056295031822, 'sharpness': 318.6144395418276, 'color_diversity': 628.1401918277322, 'composition': 0.04842329112592293, 'contrast': 60.74785452066958, 'problems': [], 'file_size': 1678143, 'timestamp': '2025-06-17T05:33:06.445731'}, 'final_score': 0.9249056295031822}, {'image_path': PosixPath('video_queue/elegant_business_wellness_tt_draft_02.png'), 'filename': 'elegant_business_wellness_tt_draft_02.png', 'descriptor_tokens': 'elegant_business_wellness', 'platform_suffix': 'tt', 'ranking_data': {'filename': 'elegant_business_wellness_tt_draft_02.png', 'final_score': 0.9015449852323946, 'sharpness': 612.2294501670483, 'color_diversity': 417.23734944816067, 'composition': 0.02427241450596554, 'contrast': 79.477552707422, 'problems': [], 'file_size': 1812358, 'timestamp': '2025-06-17T05:33:06.445749'}, 'final_score': 0.9015449852323946}, {'image_path': PosixPath('video_queue/elegant_business_office_tw_draft_01.png'), 'filename': 'elegant_business_office_tw_draft_01.png', 'descriptor_tokens': 'elegant_business_office', 'platform_suffix': 'tw', 'ranking_data': {'filename': 'elegant_business_office_tw_draft_01.png', 'final_score': 0.8994840234813948, 'sharpness': 707.8549134934353, 'color_diversity': 400.55932783486753, 'composition': 0.0289736605967568, 'contrast': 65.22396274566883, 'problems': [], 'file_size': 1507810, 'timestamp': '2025-06-17T05:33:06.445772'}, 'final_score': 0.8994840234813948}, {'image_path': PosixPath('video_queue/elegant_business_classic_tt_draft.png'), 'filename': 'elegant_business_classic_tt_draft.png', 'descriptor_tokens': 'elegant_business_classic', 'platform_suffix': 'tt', 'ranking_data': {'filename': 'elegant_business_classic_tt_draft.png', 'final_score': 0.8660872485766161, 'sharpness': 309.0705899383687, 'color_diversity': 580.4760006689457, 'composition': 0.028621925659362613, 'contrast': 84.86346530307638, 'problems': [], 'file_size': 1463166, 'timestamp': '2025-06-17T05:33:06.445709'}, 'final_score': 0.8660872485766161}, {'image_path': PosixPath('video_queue/elegant_business_office_ig_draft_01.png'), 'filename': 'elegant_business_office_ig_draft_01.png', 'descriptor_tokens': 'elegant_business_office', 'platform_suffix': 'ig', 'ranking_data': {'filename': 'elegant_business_office_ig_draft_01.png', 'final_score': 0.856665549518401, 'sharpness': 510.47690955812175, 'color_diversity': 447.06033530090065, 'composition': 0.027609539958265764, 'contrast': 69.9109085686726, 'problems': [], 'file_size': 1220461, 'timestamp': '2025-06-17T05:33:06.445744'}, 'final_score': 0.856665549518401}]. Did you mean to use `assert` instead of `return`?
+----------------------------- Captured stdout call -----------------------------
+Found 68 images in video_queue/
+Created mock ranking data for 15 images
+
+🎬 Selected 5 images for video generation (max: 5)
+
+Selection Results (sorted by score):
+================================================================================
+ 1. elegant_business_wellness_tt_draft_01.png
+    Score: 0.9249
+    Platform: tt
+    Descriptor: elegant_business_wellness
+    Has ranking data: Yes
+    Suggested video name: elegant_business_wellness_tt_video_20250617_053306.mp4
+
+ 2. elegant_business_wellness_tt_draft_02.png
+    Score: 0.9015
+    Platform: tt
+    Descriptor: elegant_business_wellness
+    Has ranking data: Yes
+    Suggested video name: elegant_business_wellness_tt_video_20250617_053306.mp4
+
+ 3. elegant_business_office_tw_draft_01.png
+    Score: 0.8995
+    Platform: tw
+    Descriptor: elegant_business_office
+    Has ranking data: Yes
+    Suggested video name: elegant_business_office_tw_video_20250617_053306.mp4
+
+ 4. elegant_business_classic_tt_draft.png
+    Score: 0.8661
+    Platform: tt
+    Descriptor: elegant_business_classic
+    Has ranking data: Yes
+    Suggested video name: elegant_business_classic_tt_video_20250617_053306.mp4
+
+ 5. elegant_business_office_ig_draft_01.png
+    Score: 0.8567
+    Platform: ig
+    Descriptor: elegant_business_office
+    Has ranking data: Yes
+    Suggested video name: elegant_business_office_ig_video_20250617_053306.mp4
+
+_____ TestPaletteExtractor.test_extract_dominant_colors_default_num_colors _____
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1421: in patched
+    with self.decoration_helper(patched,
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1403: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:530: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x104811c10>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'palette_extractor' from '/Users/jonathanmallinger/Dev/palette_extractor.py'> does not have the attribute 'KMeans'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+_________ TestPaletteExtractor.test_extract_dominant_colors_file_error _________
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1421: in patched
+    with self.decoration_helper(patched,
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1403: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:530: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x1048889b0>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'palette_extractor' from '/Users/jonathanmallinger/Dev/palette_extractor.py'> does not have the attribute 'Image'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+______ TestPaletteExtractor.test_extract_dominant_colors_image_processing ______
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1421: in patched
+    with self.decoration_helper(patched,
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1403: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:530: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x1049150d0>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'palette_extractor' from '/Users/jonathanmallinger/Dev/palette_extractor.py'> does not have the attribute 'KMeans'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+________ TestPaletteExtractor.test_extract_dominant_colors_import_error ________
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1421: in patched
+    with self.decoration_helper(patched,
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1403: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:530: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x1048cef50>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'palette_extractor' from '/Users/jonathanmallinger/Dev/palette_extractor.py'> does not have the attribute 'Image'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+______ TestPaletteExtractor.test_extract_dominant_colors_processing_error ______
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1421: in patched
+    with self.decoration_helper(patched,
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1403: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:530: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x104927850>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'palette_extractor' from '/Users/jonathanmallinger/Dev/palette_extractor.py'> does not have the attribute 'KMeans'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+____ TestPaletteExtractor.test_extract_dominant_colors_sklearn_import_error ____
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1421: in patched
+    with self.decoration_helper(patched,
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1403: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:530: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x1048cf050>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'palette_extractor' from '/Users/jonathanmallinger/Dev/palette_extractor.py'> does not have the attribute 'KMeans'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+__________ TestPaletteExtractor.test_extract_dominant_colors_success ___________
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1421: in patched
+    with self.decoration_helper(patched,
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1403: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:530: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x10495c5a0>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'palette_extractor' from '/Users/jonathanmallinger/Dev/palette_extractor.py'> does not have the attribute 'KMeans'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+________________ TestPromptBuilder.test_load_palette_not_found _________________
+
+self = <test_prompt_builder.TestPromptBuilder testMethod=test_load_palette_not_found>
+mock_path = <MagicMock name='Path' id='4992716480'>
+
+    @patch('prompt_builder.Path')
+    def test_load_palette_not_found(self, mock_path):
+        """Test palette loading when file doesn't exist."""
+        # Mock file not existing
+        mock_path.return_value.exists.return_value = False
+    
+>       palette = load_palette("NONEXISTENT")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_prompt_builder.py:110: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+palette_id = 'NONEXISTENT'
+
+    def load_palette(palette_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Load palette data from JSON files.
+    
+        Args:
+            palette_id: Palette identifier (e.g., 'A', 'B', or filename)
+    
+        Returns:
+            Palette data dictionary or None if not found
+        """
+        current_dir = Path.cwd()
+    
+        # Try different palette file patterns
+        palette_files = [
+            f"palette_{palette_id.upper()}.json",
+            f"palette_{palette_id.lower()}.json",
+            f"{palette_id}.json",
+            "palettes.json"  # Fallback to main palettes file
+        ]
+    
+        for palette_file in palette_files:
+            palette_path = current_dir / palette_file
+            if palette_path.exists():
+                try:
+>                   with open(palette_path, 'r') as f:
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+E                   OSError: [Errno 9] Bad file descriptor
+
+prompt_builder.py:61: OSError
+______________ TestWatermark.test_add_logo_watermark_import_error ______________
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1421: in patched
+    with self.decoration_helper(patched,
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1403: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:530: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x104917b70>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'watermark' from '/Users/jonathanmallinger/Dev/watermark.py'> does not have the attribute 'Image'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+________________ TestWatermark.test_add_logo_watermark_success _________________
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1421: in patched
+    with self.decoration_helper(patched,
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1403: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:530: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x104917ac0>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'watermark' from '/Users/jonathanmallinger/Dev/watermark.py'> does not have the attribute 'ImageEnhance'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+___________________ TestWatermark.test_add_metadata_success ____________________
+
+self = <test_watermark.TestWatermark testMethod=test_add_metadata_success>
+mock_datetime = <MagicMock name='datetime' id='4967658032'>
+mock_piexif = <MagicMock name='piexif' id='4967659040'>
+
+    @patch('watermark.piexif')
+    @patch('watermark.datetime')
+    def test_add_metadata_success(self, mock_datetime, mock_piexif):
+        """Test successful metadata addition."""
+        # Mock piexif functionality
+        mock_piexif.load.return_value = {
+            "0th": {}, "Exif": {}, "GPS": {}, "1st": {}, "thumbnail": None
+        }
+        mock_piexif.dump.return_value = b"mock_exif_data"
+        mock_piexif.ImageIFD.ImageDescription = 270
+        mock_piexif.ImageIFD.Artist = 315
+        mock_piexif.ImageIFD.Software = 305
+        mock_piexif.ImageIFD.DateTime = 306
+    
+        # Mock datetime
+        mock_datetime.now.return_value.strftime.return_value = "2024:01:01 12:00:00"
+    
+        metadata = {
+            "description": "Test description",
+            "artist": "Test artist",
+            "software": "Test software"
+        }
+    
+>       with patch('watermark.Image') as mock_image:
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_watermark.py:415: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x128223cd0>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'watermark' from '/Users/jonathanmallinger/Dev/watermark.py'> does not have the attribute 'Image'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+______________ TestWatermark.test_add_text_watermark_import_error ______________
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1421: in patched
+    with self.decoration_helper(patched,
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1403: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:530: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x104917e30>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'watermark' from '/Users/jonathanmallinger/Dev/watermark.py'> does not have the attribute 'Image'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+________________ TestWatermark.test_add_text_watermark_success _________________
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1421: in patched
+    with self.decoration_helper(patched,
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1403: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py:530: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x104917d80>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'watermark' from '/Users/jonathanmallinger/Dev/watermark.py'> does not have the attribute 'ImageFont'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+________________ TestWatermark.test_images_directory_path_logic ________________
+
+self = <test_watermark.TestWatermark testMethod=test_images_directory_path_logic>
+
+    def test_images_directory_path_logic(self):
+        """Test the logic for determining output paths in images/ directory."""
+>       with patch('watermark.Image') as mock_image, \
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+             patch('watermark.ImageDraw') as mock_draw, \
+             patch('watermark.ImageFont') as mock_font, \
+             patch('watermark.Path') as mock_path:
+
+test_watermark.py:494: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x129ce1e90>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'watermark' from '/Users/jonathanmallinger/Dev/watermark.py'> does not have the attribute 'Image'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+_________________ TestWatermark.test_output_directory_creation _________________
+
+self = <test_watermark.TestWatermark testMethod=test_output_directory_creation>
+mock_path = <MagicMock name='Path' id='4967661056'>
+
+    @patch('watermark.Path')
+    def test_output_directory_creation(self, mock_path):
+        """Test that output directories are created when needed."""
+        mock_path_instance = MagicMock()
+        mock_path.return_value = mock_path_instance
+        mock_path_instance.parent = MagicMock()
+    
+>       with patch('watermark.Image') as mock_image:
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_watermark.py:467: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x129ce2200>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'watermark' from '/Users/jonathanmallinger/Dev/watermark.py'> does not have the attribute 'Image'
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py:1465: AttributeError
+=========================== short test summary info ============================
+FAILED test_image_selection.py::test_image_selection - Failed: Expected None,...
+FAILED test_image_selection_with_mock_data.py::test_image_selection_with_scores
+FAILED test_palette_extractor.py::TestPaletteExtractor::test_extract_dominant_colors_default_num_colors
+FAILED test_palette_extractor.py::TestPaletteExtractor::test_extract_dominant_colors_file_error
+FAILED test_palette_extractor.py::TestPaletteExtractor::test_extract_dominant_colors_image_processing
+FAILED test_palette_extractor.py::TestPaletteExtractor::test_extract_dominant_colors_import_error
+FAILED test_palette_extractor.py::TestPaletteExtractor::test_extract_dominant_colors_processing_error
+FAILED test_palette_extractor.py::TestPaletteExtractor::test_extract_dominant_colors_sklearn_import_error
+FAILED test_palette_extractor.py::TestPaletteExtractor::test_extract_dominant_colors_success
+FAILED test_prompt_builder.py::TestPromptBuilder::test_load_palette_not_found
+FAILED test_watermark.py::TestWatermark::test_add_logo_watermark_import_error
+FAILED test_watermark.py::TestWatermark::test_add_logo_watermark_success - At...
+FAILED test_watermark.py::TestWatermark::test_add_metadata_success - Attribut...
+FAILED test_watermark.py::TestWatermark::test_add_text_watermark_import_error
+FAILED test_watermark.py::TestWatermark::test_add_text_watermark_success - At...
+FAILED test_watermark.py::TestWatermark::test_images_directory_path_logic - A...
+FAILED test_watermark.py::TestWatermark::test_output_directory_creation - Att...
+ERROR test_dry_run.py::test_palette_injection
+ERROR test_dry_run.py::test_watermark_positioning
+17 failed, 53 passed, 2 errors in 23.37s

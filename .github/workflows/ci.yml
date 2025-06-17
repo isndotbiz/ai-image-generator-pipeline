@@ -148,3 +148,23 @@ jobs:
         # Test critical imports
         python -c "import replicate, requests, numpy, torch; print('✅ Critical imports successful')"
 
+  # Job to verify core files remain intact after any cleanup operations
+  core-files-check:
+    name: Core Files Whitelist Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Verify core files whitelist
+      run: |
+        echo "🔍 Checking that all core files remain intact..."
+        python3 scripts/check_whitelist.py core_files_whitelist.txt
+        echo "✅ Core files whitelist check completed successfully"
+

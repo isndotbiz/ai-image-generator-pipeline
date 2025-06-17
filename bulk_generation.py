@@ -22,7 +22,7 @@ except ImportError:
     def log_safe(msg, level="INFO"): print(f"[{level}] {msg}")
 
 class BulkGenerator:
-    def __init__(self, base_url="http://localhost:8085"):
+    def __init__(self, base_url="http://localhost:8080"):
         self.base_url = base_url
         self.generated_images = []
         self.generation_log = []
@@ -137,6 +137,8 @@ class BulkGenerator:
                 self.generated_images.append(result['filename'])
             else:
                 print(f"❌ Failed: {result['error']}")
+                if 'details' in result:
+                    print(f"    🔍 Details: {result['details']}")
                 results.append(result)
             
             # Small delay between generations
