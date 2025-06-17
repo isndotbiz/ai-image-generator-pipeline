@@ -5,3 +5,21 @@
 [2025-06-16 21:10:14] INFO: Cleaned up 0 non-watermarked images
 [2025-06-16 21:10:14] INFO: Checking git sync status
 [2025-06-16 21:10:15] ERROR: Workflow error: 'images/approved/test_output_watermarked.png' is not in the subpath of '/Users/jonathanmallinger/Dev'
+[2025-06-16 21:18:25] INFO: Starting watermark application process
+[2025-06-16 21:18:25] INFO: Watermarking: images/custom_20250616_211820_A_ig.png
+[2025-06-16 21:18:25] INFO: ✓ Watermarked: images/custom_20250616_211820_A_ig_watermarked.png
+[2025-06-16 21:18:25] INFO: Watermarking: images/test_generation.png
+[2025-06-16 21:18:25] INFO: ✓ Watermarked: images/test_generation_watermarked.png
+[2025-06-16 21:18:25] INFO: Watermarked 2 images
+[2025-06-16 21:22:36] INFO: Starting watermark application process
+[2025-06-16 21:22:36] INFO: Watermarking: images/custom_20250616_212232_A_ig.png
+[2025-06-16 21:22:36] INFO: ✓ Watermarked: images/custom_20250616_212232_A_ig_watermarked.png
+[2025-06-16 21:22:36] INFO: Watermarked 1 images
+[2025-06-16 21:25:15] INFO: Starting watermark application process
+[2025-06-16 21:25:15] INFO: Watermarking: images/custom_20250616_212510_A_ig.png
+[2025-06-16 21:25:15] INFO: ✓ Watermarked: images/custom_20250616_212510_A_ig_watermarked.png
+[2025-06-16 21:25:15] INFO: Watermarked 1 images
+[2025-06-16 21:30:57] INFO: Starting watermark application process
+[2025-06-16 21:30:57] INFO: Watermarking: images/direct_20250616_213053_ig.png
+[2025-06-16 21:30:58] INFO: ✓ Watermarked: images/direct_20250616_213053_ig_watermarked.png
+[2025-06-16 21:30:58] INFO: Watermarked 1 images

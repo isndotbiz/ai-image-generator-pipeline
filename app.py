@@ -155,27 +155,58 @@ def api_generate():
     if not prompt:
         return jsonify({'success': False, 'error': 'Could not extract prompt'})
     
-    # Generate filename
+    # Generate filename with proper path
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     filename = f'custom_{timestamp}_{palette}_{platform}.png'
+    full_path = f'images/{filename}'
     
-    # Generate image
-    generate_cmd = f'python3 generate.py "{prompt}" "{filename}" "{aspect_ratio}"'
+    # Generate image with proper escaping
+    import shlex
+    generate_args = ['python3', 'generate.py', prompt, full_path, aspect_ratio]
+    generate_cmd = ' '.join(shlex.quote(arg) for arg in generate_args)
     generate_result = run_command(generate_cmd)
     
     if not generate_result['success']:
-        return jsonify({'success': False, 'error': 'Failed to generate image', 'details': generate_result['error']})
+        return jsonify({
+            'success': False, 
+            'error': 'Failed to generate image', 
+            'details': generate_result['error'],
+            'command': generate_cmd
+        })
     
-    # Apply watermark
-    platform_name = {'ig': 'instagram', 'tt': 'tiktok', 'tw': 'twitter'}.get(platform, 'instagram')
-    watermark_cmd = f'python3 watermark.py "{filename}" "Fortuna_Bound_Watermark.png" "{platform_name}" --logo'
-    watermark_result = run_command(watermark_cmd)
+    # Check if image was actually created
+    if not os.path.exists(full_path):
+        return jsonify({
+            'success': False, 
+            'error': 'Image file was not created', 
+            'expected_path': full_path
+        })
+    
+    # Apply watermark with automatic workflow integration
+    if WATERMARK_AVAILABLE:
+        try:
+            # Use our optimized watermarking workflow
+            watermarked_files = watermark_pipeline.workflow.watermark_new_images()
+            watermark_success = len(watermarked_files) > 0
+        except Exception as e:
+            # Fallback to direct watermarking
+            platform_name = {'ig': 'instagram', 'tt': 'tiktok', 'tw': 'twitter'}.get(platform, 'instagram')
+            watermark_cmd = f'python3 watermark.py "{full_path}" "Fortuna_Bound_Watermark.png" "{platform_name}" --logo'
+            watermark_result = run_command(watermark_cmd)
+            watermark_success = watermark_result['success']
+    else:
+        # Fallback watermarking
+        platform_name = {'ig': 'instagram', 'tt': 'tiktok', 'tw': 'twitter'}.get(platform, 'instagram')
+        watermark_cmd = f'python3 watermark.py "{full_path}" "Fortuna_Bound_Watermark.png" "{platform_name}" --logo'
+        watermark_result = run_command(watermark_cmd)
+        watermark_success = watermark_result['success']
     
     return jsonify({
         'success': True, 
         'filename': filename,
-        'watermarked': watermark_result['success'],
-        'prompt': prompt
+        'watermarked': watermark_success,
+        'prompt': prompt,
+        'path': full_path
     })
 
 @app.route('/api/run-pipeline', methods=['POST'])
@@ -301,6 +332,142 @@ def api_image_stats():
         return jsonify(stats)
     except Exception as e:
         return jsonify({'error': str(e)})
+
+@app.route('/api/generate-mantras', methods=['POST'])
+def api_generate_mantras():
+    """Generate uplifting mantras with preview"""
+    try:
+        from mantra_generator import MantraGenerator
+        data = request.get_json() or {}
+        
+        category = data.get('category')
+        count = data.get('count', 5)
+        
+        generator = MantraGenerator()
+        mantras = generator.generate_mantra_options(category, count)
+        
+        return jsonify(mantras)
+    except ImportError:
+        return jsonify({'success': False, 'error': 'Mantra generator not available'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
+@app.route('/api/preview-mantra', methods=['POST'])
+def api_preview_mantra():
+    """Preview text placement for custom mantra"""
+    try:
+        from mantra_generator import MantraGenerator
+        data = request.get_json() or {}
+        
+        text = data.get('text', '')
+        width = data.get('width', 1080)
+        height = data.get('height', 1350)
+        
+        if not text:
+            return jsonify({'success': False, 'error': 'No text provided'})
+        
+        generator = MantraGenerator()
+        preview = generator.preview_text_placement(text, width, height)
+        
+        return jsonify({'success': True, 'preview': preview})
+    except ImportError:
+        return jsonify({'success': False, 'error': 'Mantra generator not available'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
+@app.route('/api/generate-direct', methods=['POST'])
+def api_generate_direct():
+    """Generate image directly from custom prompt"""
+    try:
+        from direct_prompt_generator import DirectPromptGenerator
+        data = request.get_json()
+        
+        base_prompt = data.get('prompt', '')
+        style = data.get('style')
+        platform = data.get('platform', 'ig')
+        aspect_ratio = data.get('aspect_ratio', '4:5')
+        custom_mantra = data.get('mantra')
+        mantra_category = data.get('mantra_category')
+        
+        if not base_prompt:
+            return jsonify({'success': False, 'error': 'No prompt provided'})
+        
+        generator = DirectPromptGenerator()
+        
+        # Generate enhanced prompt
+        if custom_mantra or mantra_category:
+            result = generator.generate_with_mantra(
+                base_prompt, 
+                mantra_category, 
+                custom_mantra, 
+                1
+            )
+            enhanced_prompt = result['results'][0]['enhanced_prompt']
+            mantra_info = result['results'][0]['mantra']
+        else:
+            enhanced_prompt = generator.enhance_prompt(base_prompt, style, platform)
+            mantra_info = None
+        
+        # Generate filename
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f'direct_{timestamp}_{platform}.png'
+        full_path = f'images/{filename}'
+        
+        # Generate image using enhanced prompt
+        import shlex
+        generate_args = ['python3', 'generate.py', enhanced_prompt, full_path, aspect_ratio]
+        generate_cmd = ' '.join(shlex.quote(arg) for arg in generate_args)
+        generate_result = run_command(generate_cmd)
+        
+        if not generate_result['success']:
+            return jsonify({
+                'success': False, 
+                'error': 'Failed to generate image', 
+                'details': generate_result['error'],
+                'enhanced_prompt': enhanced_prompt
+            })
+        
+        # Check if image was created
+        if not os.path.exists(full_path):
+            return jsonify({
+                'success': False, 
+                'error': 'Image file was not created', 
+                'expected_path': full_path
+            })
+        
+        # Apply watermark
+        watermark_success = False
+        if WATERMARK_AVAILABLE:
+            try:
+                watermarked_files = watermark_pipeline.workflow.watermark_new_images()
+                watermark_success = len(watermarked_files) > 0
+            except Exception as e:
+                platform_name = {'ig': 'instagram', 'tt': 'tiktok', 'tw': 'twitter'}.get(platform, 'instagram')
+                watermark_cmd = f'python3 watermark.py "{full_path}" "Fortuna_Bound_Watermark.png" "{platform_name}" --logo'
+                watermark_result = run_command(watermark_cmd)
+                watermark_success = watermark_result['success']
+        
+        response = {
+            'success': True,
+            'filename': filename,
+            'path': full_path,
+            'base_prompt': base_prompt,
+            'enhanced_prompt': enhanced_prompt,
+            'watermarked': watermark_success,
+            'style': style,
+            'platform': platform,
+            'aspect_ratio': aspect_ratio
+        }
+        
+        if mantra_info:
+            response['mantra'] = mantra_info
+        
+        return jsonify(response)
+        
+    except ImportError:
+        return jsonify({'success': False, 'error': 'Direct prompt generator not available'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
 
 if __name__ == '__main__':
     print("Starting AI Image Generation Pipeline Command Center...")
