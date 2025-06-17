@@ -1,0 +1,37 @@
+{
+  "start_time": "2025-06-16T21:53:46.571332",
+  "end_time": "2025-06-16T21:55:55.123889",
+  "duration_minutes": 2.142542616666667,
+  "images": {
+    "total": 20,
+    "successful": 20,
+    "failed": 0,
+    "filenames": [
+      "direct_20250616_215346_ig.png",
+      "direct_20250616_215353_tt.png",
+      "direct_20250616_215359_tw.png",
+      "direct_20250616_215405_li.png",
+      "direct_20250616_215412_fb.png",
+      "direct_20250616_215418_ig.png",
+      "direct_20250616_215425_tt.png",
+      "direct_20250616_215431_tw.png",
+      "direct_20250616_215438_li.png",
+      "direct_20250616_215444_fb.png",
+      "direct_20250616_215451_ig.png",
+      "direct_20250616_215457_tt.png",
+      "direct_20250616_215504_tw.png",
+      "direct_20250616_215510_li.png",
+      "direct_20250616_215516_fb.png",
+      "direct_20250616_215523_ig.png",
+      "direct_20250616_215529_tt.png",
+      "direct_20250616_215535_tw.png",
+      "direct_20250616_215541_li.png",
+      "direct_20250616_215548_fb.png"
+    ]
+  },
+  "video": {
+    "success": false,
+    "error": "RUNWAY_API_KEY environment variable not set"
+  },
+  "success_rate": 100.0
+}

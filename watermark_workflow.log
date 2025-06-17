@@ -23,3 +23,83 @@
 [2025-06-16 21:30:57] INFO: Watermarking: images/direct_20250616_213053_ig.png
 [2025-06-16 21:30:58] INFO: ✓ Watermarked: images/direct_20250616_213053_ig_watermarked.png
 [2025-06-16 21:30:58] INFO: Watermarked 1 images
+[2025-06-16 21:53:50] INFO: Starting watermark application process
+[2025-06-16 21:53:50] INFO: Watermarking: images/direct_20250616_215346_ig.png
+[2025-06-16 21:53:51] INFO: ✓ Watermarked: images/direct_20250616_215346_ig_watermarked.png
+[2025-06-16 21:53:51] INFO: Watermarked 1 images
+[2025-06-16 21:53:57] INFO: Starting watermark application process
+[2025-06-16 21:53:57] INFO: Watermarking: images/direct_20250616_215353_tt.png
+[2025-06-16 21:53:57] INFO: ✓ Watermarked: images/direct_20250616_215353_tt_watermarked.png
+[2025-06-16 21:53:57] INFO: Watermarked 1 images
+[2025-06-16 21:54:03] INFO: Starting watermark application process
+[2025-06-16 21:54:03] INFO: Watermarking: images/direct_20250616_215359_tw.png
+[2025-06-16 21:54:03] INFO: ✓ Watermarked: images/direct_20250616_215359_tw_watermarked.png
+[2025-06-16 21:54:03] INFO: Watermarked 1 images
+[2025-06-16 21:54:10] INFO: Starting watermark application process
+[2025-06-16 21:54:10] INFO: Watermarking: images/direct_20250616_215405_li.png
+[2025-06-16 21:54:10] INFO: ✓ Watermarked: images/direct_20250616_215405_li_watermarked.png
+[2025-06-16 21:54:10] INFO: Watermarked 1 images
+[2025-06-16 21:54:16] INFO: Starting watermark application process
+[2025-06-16 21:54:16] INFO: Watermarking: images/direct_20250616_215412_fb.png
+[2025-06-16 21:54:16] INFO: ✓ Watermarked: images/direct_20250616_215412_fb_watermarked.png
+[2025-06-16 21:54:16] INFO: Watermarked 1 images
+[2025-06-16 21:54:22] INFO: Starting watermark application process
+[2025-06-16 21:54:22] INFO: Watermarking: images/direct_20250616_215418_ig.png
+[2025-06-16 21:54:23] INFO: ✓ Watermarked: images/direct_20250616_215418_ig_watermarked.png
+[2025-06-16 21:54:23] INFO: Watermarked 1 images
+[2025-06-16 21:54:29] INFO: Starting watermark application process
+[2025-06-16 21:54:29] INFO: Watermarking: images/direct_20250616_215425_tt.png
+[2025-06-16 21:54:29] INFO: ✓ Watermarked: images/direct_20250616_215425_tt_watermarked.png
+[2025-06-16 21:54:29] INFO: Watermarked 1 images
+[2025-06-16 21:54:36] INFO: Starting watermark application process
+[2025-06-16 21:54:36] INFO: Watermarking: images/direct_20250616_215431_tw.png
+[2025-06-16 21:54:36] INFO: ✓ Watermarked: images/direct_20250616_215431_tw_watermarked.png
+[2025-06-16 21:54:36] INFO: Watermarked 1 images
+[2025-06-16 21:54:42] INFO: Starting watermark application process
+[2025-06-16 21:54:42] INFO: Watermarking: images/direct_20250616_215438_li.png
+[2025-06-16 21:54:42] INFO: ✓ Watermarked: images/direct_20250616_215438_li_watermarked.png
+[2025-06-16 21:54:42] INFO: Watermarked 1 images
+[2025-06-16 21:54:49] INFO: Starting watermark application process
+[2025-06-16 21:54:49] INFO: Watermarking: images/direct_20250616_215444_fb.png
+[2025-06-16 21:54:49] INFO: ✓ Watermarked: images/direct_20250616_215444_fb_watermarked.png
+[2025-06-16 21:54:49] INFO: Watermarked 1 images
+[2025-06-16 21:54:55] INFO: Starting watermark application process
+[2025-06-16 21:54:55] INFO: Watermarking: images/direct_20250616_215451_ig.png
+[2025-06-16 21:54:55] INFO: ✓ Watermarked: images/direct_20250616_215451_ig_watermarked.png
+[2025-06-16 21:54:55] INFO: Watermarked 1 images
+[2025-06-16 21:55:02] INFO: Starting watermark application process
+[2025-06-16 21:55:02] INFO: Watermarking: images/direct_20250616_215457_tt.png
+[2025-06-16 21:55:02] INFO: ✓ Watermarked: images/direct_20250616_215457_tt_watermarked.png
+[2025-06-16 21:55:02] INFO: Watermarked 1 images
+[2025-06-16 21:55:08] INFO: Starting watermark application process
+[2025-06-16 21:55:08] INFO: Watermarking: images/direct_20250616_215504_tw.png
+[2025-06-16 21:55:08] INFO: ✓ Watermarked: images/direct_20250616_215504_tw_watermarked.png
+[2025-06-16 21:55:08] INFO: Watermarked 1 images
+[2025-06-16 21:55:14] INFO: Starting watermark application process
+[2025-06-16 21:55:14] INFO: Watermarking: images/direct_20250616_215510_li.png
+[2025-06-16 21:55:14] INFO: ✓ Watermarked: images/direct_20250616_215510_li_watermarked.png
+[2025-06-16 21:55:14] INFO: Watermarked 1 images
+[2025-06-16 21:55:20] INFO: Starting watermark application process
+[2025-06-16 21:55:20] INFO: Watermarking: images/direct_20250616_215516_fb.png
+[2025-06-16 21:55:21] INFO: ✓ Watermarked: images/direct_20250616_215516_fb_watermarked.png
+[2025-06-16 21:55:21] INFO: Watermarked 1 images
+[2025-06-16 21:55:27] INFO: Starting watermark application process
+[2025-06-16 21:55:27] INFO: Watermarking: images/direct_20250616_215523_ig.png
+[2025-06-16 21:55:27] INFO: ✓ Watermarked: images/direct_20250616_215523_ig_watermarked.png
+[2025-06-16 21:55:27] INFO: Watermarked 1 images
+[2025-06-16 21:55:33] INFO: Starting watermark application process
+[2025-06-16 21:55:33] INFO: Watermarking: images/direct_20250616_215529_tt.png
+[2025-06-16 21:55:33] INFO: ✓ Watermarked: images/direct_20250616_215529_tt_watermarked.png
+[2025-06-16 21:55:33] INFO: Watermarked 1 images
+[2025-06-16 21:55:39] INFO: Starting watermark application process
+[2025-06-16 21:55:39] INFO: Watermarking: images/direct_20250616_215535_tw.png
+[2025-06-16 21:55:39] INFO: ✓ Watermarked: images/direct_20250616_215535_tw_watermarked.png
+[2025-06-16 21:55:39] INFO: Watermarked 1 images
+[2025-06-16 21:55:46] INFO: Starting watermark application process
+[2025-06-16 21:55:46] INFO: Watermarking: images/direct_20250616_215541_li.png
+[2025-06-16 21:55:46] INFO: ✓ Watermarked: images/direct_20250616_215541_li_watermarked.png
+[2025-06-16 21:55:46] INFO: Watermarked 1 images
+[2025-06-16 21:55:53] INFO: Starting watermark application process
+[2025-06-16 21:55:53] INFO: Watermarking: images/direct_20250616_215548_fb.png
+[2025-06-16 21:55:53] INFO: ✓ Watermarked: images/direct_20250616_215548_fb_watermarked.png
+[2025-06-16 21:55:53] INFO: Watermarked 1 images
