@@ -141,7 +141,7 @@ def api_generate():
     
     # Apply watermark
     platform_name = {'ig': 'instagram', 'tt': 'tiktok', 'tw': 'twitter'}.get(platform, 'instagram')
-    watermark_cmd = f'python3 watermark.py "{filename}" "@FORTUNA_BOUND" "{platform_name}"'
+    watermark_cmd = f'python3 watermark.py "{filename}" "Fortuna_Bound_Watermark.png" "{platform_name}" --logo'
     watermark_result = run_command(watermark_cmd)
     
     return jsonify({
@@ -277,6 +277,6 @@ def api_image_stats():
 
 if __name__ == '__main__':
     print("Starting AI Image Generation Pipeline Command Center...")
-    print("Access the web interface at: http://localhost:5001")
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    print("Access the web interface at: http://localhost:8080")
+    app.run(debug=True, host='0.0.0.0', port=8080)
 
