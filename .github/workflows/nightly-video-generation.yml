@@ -1,0 +1,206 @@
+name: Nightly Video Generation Pipeline
+
+# Automated nightly execution of the complete video generation pipeline
+# Runs every night at 2 AM UTC, generating 10 videos for Instagram platform
+# Includes comprehensive environment validation and error reporting
+
+on:
+  # Run nightly at 2 AM UTC
+  schedule:
+    - cron: '0 2 * * *'
+  
+  # Allow manual triggering
+  workflow_dispatch:
+    inputs:
+      max_videos:
+        description: 'Maximum number of videos to generate'
+        required: false
+        default: '10'
+        type: string
+      platform:
+        description: 'Target platform (ig, tt, tw)'
+        required: false
+        default: 'ig'
+        type: choice
+        options:
+        - ig
+        - tt
+        - tw
+      timeout:
+        description: 'Task polling timeout in seconds'
+        required: false
+        default: '600'
+        type: string
+      dry_run:
+        description: 'Run in dry-run mode (no actual processing)'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  generate-videos:
+    name: Generate Videos Pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 30  # Global job timeout
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Cache Python dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Verify critical imports
+      run: |
+        echo "Testing critical dependencies..."
+        python -c "import requests; print(f'✓ Requests {requests.__version__}')"
+        python -c "import numpy as np; print(f'✓ NumPy {np.__version__}')"
+        python -c "from pathlib import Path; print('✓ Pathlib available')"
+        echo "✅ Dependencies verified"
+    
+    - name: Create required directories
+      run: |
+        mkdir -p video_queue
+        mkdir -p video_outputs
+        mkdir -p logs
+        echo "✅ Directories created"
+    
+    # For demo purposes - in real usage, you'd populate video_queue with actual images
+    - name: Setup demo environment (if no images present)
+      run: |
+        if [ ! "$(ls -A video_queue/*.png 2>/dev/null)" ]; then
+          echo "⚠️ No images found in video_queue - this is expected for demo"
+          echo "In production, populate video_queue/ with PNG images before running"
+          
+          # Create a placeholder to show the structure
+          echo "Demo mode: Creating placeholder structure"
+          touch video_queue/.gitkeep
+        else
+          echo "✅ Found images in video_queue directory"
+          ls -la video_queue/*.png
+        fi
+    
+    - name: Environment validation (dry run)
+      env:
+        # Note: In production, set these as repository secrets
+        # RUNWAYML_API_SECRET: ${{ secrets.RUNWAYML_API_SECRET }}
+        # SMARTPROXY_USERNAME: ${{ secrets.SMARTPROXY_USERNAME }}
+        # SMARTPROXY_PASSWORD: ${{ secrets.SMARTPROXY_PASSWORD }}
+        # SMARTPROXY_AUTH_TOKEN: ${{ secrets.SMARTPROXY_AUTH_TOKEN }}
+        DEMO_MODE: "true"
+      run: |
+        echo "🔍 Running environment validation..."
+        
+        # For demo purposes, skip actual execution if no API key
+        if [ -z "$RUNWAYML_API_SECRET" ]; then
+          echo "⚠️ RUNWAYML_API_SECRET not set - running in dry-run mode for demo"
+          python generate_videos.py --dry-run --max_videos ${{ github.event.inputs.max_videos || '10' }} --platform ${{ github.event.inputs.platform || 'ig' }}
+        else
+          echo "✅ API key detected - would run full pipeline"
+          echo "Run: python generate_videos.py --max_videos ${{ github.event.inputs.max_videos || '10' }} --platform ${{ github.event.inputs.platform || 'ig' }}"
+        fi
+    
+    - name: Execute Video Generation Pipeline
+      if: env.RUNWAYML_API_SECRET != ''
+      env:
+        RUNWAYML_API_SECRET: ${{ secrets.RUNWAYML_API_SECRET }}
+        SMARTPROXY_USERNAME: ${{ secrets.SMARTPROXY_USERNAME }}
+        SMARTPROXY_PASSWORD: ${{ secrets.SMARTPROXY_PASSWORD }}
+        SMARTPROXY_AUTH_TOKEN: ${{ secrets.SMARTPROXY_AUTH_TOKEN }}
+      run: |
+        echo "🚀 Executing full video generation pipeline..."
+        
+        # Set parameters from inputs or defaults
+        MAX_VIDEOS="${{ github.event.inputs.max_videos || '10' }}"
+        PLATFORM="${{ github.event.inputs.platform || 'ig' }}"
+        TIMEOUT="${{ github.event.inputs.timeout || '600' }}"
+        DRY_RUN_FLAG=""
+        
+        if [ "${{ github.event.inputs.dry_run || 'false' }}" = "true" ]; then
+          DRY_RUN_FLAG="--dry-run"
+        fi
+        
+        # Execute pipeline
+        python generate_videos.py \
+          --max_videos "$MAX_VIDEOS" \
+          --platform "$PLATFORM" \
+          --timeout "$TIMEOUT" \
+          $DRY_RUN_FLAG
+    
+    - name: Upload pipeline artifacts
+      if: always()  # Always upload logs, even on failure
+      uses: actions/upload-artifact@v3
+      with:
+        name: pipeline-artifacts-${{ github.run_number }}
+        path: |
+          logs/
+          video_outputs/*.json
+          runway_polling_results_*.json
+          task_queue_*.json
+        retention-days: 30
+    
+    - name: Upload generated videos
+      if: success()  # Only upload videos on successful completion
+      uses: actions/upload-artifact@v3
+      with:
+        name: generated-videos-${{ github.run_number }}
+        path: video_outputs/*.mp4
+        retention-days: 7
+    
+    - name: Generate summary report
+      if: always()
+      run: |
+        echo "📊 Pipeline Execution Summary" >> $GITHUB_STEP_SUMMARY
+        echo "============================" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Execution Details:**" >> $GITHUB_STEP_SUMMARY
+        echo "- Trigger: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Max Videos: ${{ github.event.inputs.max_videos || '10' }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Platform: ${{ github.event.inputs.platform || 'ig' }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Timeout: ${{ github.event.inputs.timeout || '600' }}s" >> $GITHUB_STEP_SUMMARY
+        echo "- Dry Run: ${{ github.event.inputs.dry_run || 'false' }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        # Count artifacts if they exist
+        if [ -d "video_outputs" ]; then
+          VIDEO_COUNT=$(ls -1 video_outputs/*.mp4 2>/dev/null | wc -l || echo "0")
+          REPORT_COUNT=$(ls -1 video_outputs/*.json 2>/dev/null | wc -l || echo "0")
+          echo "**Generated Artifacts:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Videos: $VIDEO_COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "- Reports: $REPORT_COUNT" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -d "logs" ]; then
+          LOG_COUNT=$(ls -1 logs/*.log 2>/dev/null | wc -l || echo "0")
+          echo "- Log files: $LOG_COUNT" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Status:** ✅ Pipeline completed" >> $GITHUB_STEP_SUMMARY
+    
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "❌ Pipeline failed - check logs for details" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Troubleshooting:**" >> $GITHUB_STEP_SUMMARY
+        echo "1. Check that RUNWAYML_API_SECRET is set in repository secrets" >> $GITHUB_STEP_SUMMARY
+        echo "2. Verify that video_queue/ contains PNG images" >> $GITHUB_STEP_SUMMARY
+        echo "3. Review pipeline logs in artifacts" >> $GITHUB_STEP_SUMMARY
+        echo "4. Check environment validation output" >> $GITHUB_STEP_SUMMARY
+

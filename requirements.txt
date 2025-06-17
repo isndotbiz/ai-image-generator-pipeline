@@ -7,6 +7,9 @@ numpy>=1.21.0
 scikit-learn>=1.0.0
 python-dotenv>=1.0.0
 
+# RunwayML SDK for video generation
+runwayml>=0.4.0
+
 # Image processing and computer vision
 opencv-python>=4.5.0
 matplotlib>=3.3.0
