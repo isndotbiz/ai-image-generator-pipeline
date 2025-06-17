@@ -8,3 +8,13 @@ images/*/*.*
 # Keep .gitkeep files to preserve empty directories
 !images/.gitkeep
 !images/*/.gitkeep
+
+# Prevent future documentation clutter
+*_GUIDE.md
+*_IMPLEMENTATION*.md
+
+# runtime artefacts
+*.bak
+*.log
+*_20????_*
+video_outputs/*.mp4
