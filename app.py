@@ -15,6 +15,17 @@ from functools import lru_cache
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 
+# Import robust output system
+try:
+    from robust_output import log_safe, generate_descriptive_filename, workflow_manager
+    ROBUST_OUTPUT_AVAILABLE = True
+except ImportError:
+    ROBUST_OUTPUT_AVAILABLE = False
+    def log_safe(msg, level="INFO"): pass
+    def generate_descriptive_filename(prompt="", platform="ig", descriptors=None): 
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        return f"image_{timestamp}_{platform}.png"
+
 # Import our watermarking pipeline
 try:
     from auto_watermark_workflow import WatermarkWorkflow
@@ -408,9 +419,15 @@ def api_generate_direct():
             enhanced_prompt = generator.enhance_prompt(base_prompt, style, platform)
             mantra_info = None
         
-        # Generate filename
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = f'direct_{timestamp}_{platform}.png'
+        # Generate descriptive filename with 3 descriptors + timestamp + platform
+        if ROBUST_OUTPUT_AVAILABLE:
+            filename = generate_descriptive_filename(enhanced_prompt, platform)
+            log_safe(f"Generated descriptive filename: {filename}")
+        else:
+            # Fallback to simple filename
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            filename = f'direct_{timestamp}_{platform}.png'
+        
         full_path = f'images/{filename}'
         
         # Generate image using enhanced prompt

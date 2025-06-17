@@ -13,6 +13,14 @@ import random
 from datetime import datetime
 from typing import List, Dict
 
+# Import robust output system
+try:
+    from robust_output import log_safe, generate_descriptive_filename, workflow_manager
+    ROBUST_OUTPUT_AVAILABLE = True
+except ImportError:
+    ROBUST_OUTPUT_AVAILABLE = False
+    def log_safe(msg, level="INFO"): print(f"[{level}] {msg}")
+
 class BulkGenerator:
     def __init__(self, base_url="http://localhost:8085"):
         self.base_url = base_url
