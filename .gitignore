@@ -1,4 +1,10 @@
 .env
 *.env
 .env.local
-images/*.png
+
+# Ignore generated image assets but keep folder structure
+images/*.*
+images/*/*.*
+# Keep .gitkeep files to preserve empty directories
+!images/.gitkeep
+!images/*/.gitkeep
