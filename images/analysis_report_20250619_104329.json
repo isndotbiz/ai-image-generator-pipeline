@@ -1,0 +1,13 @@
+[
+  {
+    "filename": "Fortuna_Bound_Watermark.png",
+    "quality_passed": false,
+    "text_passed": false,
+    "overall_status": "rejected",
+    "quality_reason": "File too small",
+    "text_reason": "",
+    "extracted_text": "",
+    "file_size": 1553,
+    "timestamp": "2025-06-19T10:43:29.103855"
+  }
+]

@@ -1,0 +1,234 @@
+{
+  "selection_criteria": {
+    "min_score": 0.5,
+    "max_selections": 20,
+    "excluded_problems": [
+      "motion_blur",
+      "unusual_orientation",
+      "analysis_error"
+    ]
+  },
+  "selected_images": [
+    {
+      "filename": "elegant_business_confident_20250619_071205_ig_watermarked.png",
+      "final_score": 0.8016384184116019,
+      "sharpness": 1799.3685995982387,
+      "color_diversity": 530.841044900183,
+      "composition": 0.8648660303965336,
+      "contrast": 71.76508230601759,
+      "problems": [],
+      "file_size": 1698756,
+      "timestamp": "2025-06-19T11:49:05.322512"
+    },
+    {
+      "filename": "maldives_sneaker_7_A_ig.png",
+      "final_score": 0.5348730181786181,
+      "sharpness": 387.5081020431921,
+      "color_diversity": 543.7986504930249,
+      "composition": 0.3690177340467437,
+      "contrast": 61.24668540490875,
+      "problems": [],
+      "file_size": 1307093,
+      "timestamp": "2025-06-19T11:48:37.761456"
+    },
+    {
+      "filename": "batch_20250619_085201_scene14_tw.png",
+      "final_score": 0.5123992039509488,
+      "sharpness": 304.29930171462775,
+      "color_diversity": 628.5439246326015,
+      "composition": 0.10009943886408731,
+      "contrast": 79.2984917892748,
+      "problems": [],
+      "file_size": 1349788,
+      "timestamp": "2025-06-19T11:47:39.841964"
+    },
+    {
+      "filename": "generated_20250619_114215_07_a_vintage_luxury.png",
+      "final_score": 0.8010680649849955,
+      "sharpness": 1002.52914825893,
+      "color_diversity": 565.6799105250462,
+      "composition": 0.8869903564453125,
+      "contrast": 70.09713521466573,
+      "problems": [],
+      "file_size": 563632,
+      "timestamp": "2025-06-19T11:50:33.517888"
+    },
+    {
+      "filename": "london_silk_12_A_tt.png",
+      "final_score": 0.6320522803284938,
+      "sharpness": 541.501632638911,
+      "color_diversity": 521.737264376941,
+      "composition": 0.7211297123015873,
+      "contrast": 64.73028824956107,
+      "problems": [],
+      "file_size": 1563461,
+      "timestamp": "2025-06-19T11:48:03.164055"
+    },
+    {
+      "filename": "batch_20250619_090214_scene02_ig.png",
+      "final_score": 0.5023351830510376,
+      "sharpness": 252.50813715326152,
+      "color_diversity": 609.8495961891712,
+      "composition": 0.13066771435136554,
+      "contrast": 80.12463880556923,
+      "problems": [],
+      "file_size": 1245614,
+      "timestamp": "2025-06-19T11:48:09.081736"
+    },
+    {
+      "filename": "maldives_handcrafted_6_A_tw_watermarked.png",
+      "final_score": 0.7386290837459615,
+      "sharpness": 1453.678000534439,
+      "color_diversity": 528.3063921210223,
+      "composition": 0.5506312391493056,
+      "contrast": 59.90008942614907,
+      "problems": [],
+      "file_size": 1652442,
+      "timestamp": "2025-06-19T11:48:00.408266"
+    },
+    {
+      "filename": "generated_20250619_114200_05_a_vibrant_street.png",
+      "final_score": 0.5176176841976384,
+      "sharpness": 438.47793567892165,
+      "color_diversity": 582.4237927976199,
+      "composition": 0.56254638671875,
+      "contrast": 32.87800257705909,
+      "problems": [],
+      "file_size": 466604,
+      "timestamp": "2025-06-19T11:49:05.870584"
+    },
+    {
+      "filename": "elegant_business_minimal_20250619_070845_ig_watermarked.png",
+      "final_score": 0.7773162358375155,
+      "sharpness": 1332.082873556083,
+      "color_diversity": 499.0961038805376,
+      "composition": 0.9575824743960084,
+      "contrast": 54.03518729887284,
+      "problems": [],
+      "file_size": 1728448,
+      "timestamp": "2025-06-19T11:48:46.323375"
+    },
+    {
+      "filename": "batch_20250619_085747_scene01_tt.png",
+      "final_score": 0.5286922842688196,
+      "sharpness": 313.3533984960574,
+      "color_diversity": 562.7961311770032,
+      "composition": 0.2338309151785714,
+      "contrast": 77.7287001613405,
+      "problems": [],
+      "file_size": 1207715,
+      "timestamp": "2025-06-19T11:47:48.272039"
+    },
+    {
+      "filename": "batch_20250619_085450_scene07_tw.png",
+      "final_score": 0.7371362288483949,
+      "sharpness": 934.9800849380166,
+      "color_diversity": 593.6489958719337,
+      "composition": 0.4802370876736111,
+      "contrast": 73.30628370389422,
+      "problems": [],
+      "file_size": 1662669,
+      "timestamp": "2025-06-19T11:50:51.312138"
+    },
+    {
+      "filename": "maldives_watch_3_A_tw_watermarked.png",
+      "final_score": 0.5586595426013292,
+      "sharpness": 400.0111112231922,
+      "color_diversity": 598.8258591709179,
+      "composition": 0.265470222594246,
+      "contrast": 77.73621570504538,
+      "problems": [],
+      "file_size": 1212991,
+      "timestamp": "2025-06-19T11:49:49.530878"
+    },
+    {
+      "filename": "elegant_business_cityscape_20250619_061455_ig.png",
+      "final_score": 0.6626496991384028,
+      "sharpness": 695.6992416708281,
+      "color_diversity": 535.6981737333911,
+      "composition": 0.6493884174763656,
+      "contrast": 61.38318722630433,
+      "problems": [],
+      "file_size": 1430596,
+      "timestamp": "2025-06-19T11:49:20.826715"
+    },
+    {
+      "filename": "maldives_camera_1_A_ig_watermarked.png",
+      "final_score": 0.5646411170225907,
+      "sharpness": 508.66567064619153,
+      "color_diversity": 604.1459073041915,
+      "composition": 0.07129743303571429,
+      "contrast": 76.56461834963447,
+      "problems": [],
+      "file_size": 1155991,
+      "timestamp": "2025-06-19T11:50:24.231024"
+    },
+    {
+      "filename": "batch_20250619_085140_scene13_ig.png",
+      "final_score": 0.5063920890168156,
+      "sharpness": 312.7727003766903,
+      "color_diversity": 553.9760670614228,
+      "composition": 0.20430155265231092,
+      "contrast": 68.51129241113479,
+      "problems": [],
+      "file_size": 1120153,
+      "timestamp": "2025-06-19T11:47:57.111276"
+    },
+    {
+      "filename": "elegant_business_serene_20250619_071127_ig_watermarked.png",
+      "final_score": 0.7666479689237397,
+      "sharpness": 1074.2635769657848,
+      "color_diversity": 525.4428681264113,
+      "composition": 0.7531045250131303,
+      "contrast": 61.25495164854917,
+      "problems": [],
+      "file_size": 1192243,
+      "timestamp": "2025-06-19T11:50:04.428136"
+    },
+    {
+      "filename": "batch_20250619_090830_scene11_tt.png",
+      "final_score": 0.5320089406059001,
+      "sharpness": 300.9283927407808,
+      "color_diversity": 651.6455936676914,
+      "composition": 0.2471370830233135,
+      "contrast": 80.41914370287584,
+      "problems": [],
+      "file_size": 1178087,
+      "timestamp": "2025-06-19T11:50:21.156984"
+    },
+    {
+      "filename": "batch_20250619_090123_scene18_ig.png",
+      "final_score": 0.7116502228627095,
+      "sharpness": 909.5960645826839,
+      "color_diversity": 518.9337725610361,
+      "composition": 0.518425518644958,
+      "contrast": 61.98410682864234,
+      "problems": [],
+      "file_size": 1586069,
+      "timestamp": "2025-06-19T11:48:14.804409"
+    },
+    {
+      "filename": "batch_20250619_085647_scene16_tw.png",
+      "final_score": 0.5278468248749586,
+      "sharpness": 348.437116342153,
+      "color_diversity": 563.7948867594037,
+      "composition": 0.4460555400545635,
+      "contrast": 58.779373732746166,
+      "problems": [],
+      "file_size": 1375385,
+      "timestamp": "2025-06-19T11:49:40.952140"
+    },
+    {
+      "filename": "elegant_business_cityscape_20250619_065932_ig_watermarked.png",
+      "final_score": 0.7516090966694075,
+      "sharpness": 1433.4142227375182,
+      "color_diversity": 591.7765267178083,
+      "composition": 0.38459091058298317,
+      "contrast": 76.76761642326721,
+      "problems": [],
+      "file_size": 1450936,
+      "timestamp": "2025-06-19T11:48:31.939174"
+    }
+  ],
+  "timestamp": "2025-06-19T11:50:51.348212"
+}

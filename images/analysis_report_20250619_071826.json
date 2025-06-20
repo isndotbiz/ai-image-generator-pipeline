@@ -1,0 +1,24 @@
+[
+  {
+    "filename": "test_output.png",
+    "quality_passed": true,
+    "text_passed": false,
+    "overall_status": "rejected",
+    "quality_reason": "Quality check passed",
+    "text_reason": "Contains problematic text pattern: \\b\\w{1,2}\\b\\s+\\b\\w{1,2}\\b",
+    "extracted_text": "| \u00ab\n' ee om , \u00b0 . \u2018\n_ > aa",
+    "file_size": 1159233,
+    "timestamp": "2025-06-19T07:18:26.219669"
+  },
+  {
+    "filename": "Fortuna_Bound_Watermark.png",
+    "quality_passed": true,
+    "text_passed": false,
+    "overall_status": "rejected",
+    "quality_reason": "Quality check passed",
+    "text_reason": "Non-approved text found: r '\n@Fortuna_ Bound...",
+    "extracted_text": "r '\n@Fortuna_ Bound",
+    "file_size": 537678,
+    "timestamp": "2025-06-19T07:18:26.681229"
+  }
+]
