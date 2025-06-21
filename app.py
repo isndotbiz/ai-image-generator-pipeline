@@ -145,16 +145,15 @@ def api_generate():
     
     location = data.get('location', '')
     item = data.get('item', '')
-    mantra = data.get('mantra', '')
     aspect_ratio = data.get('aspect_ratio', '4:5')
     palette = data.get('palette', 'A')
     platform = data.get('platform', 'ig')
     
-    if not all([location, item, mantra]):
-        return jsonify({'success': False, 'error': 'Missing required fields'})
+    if not all([location, item]):
+        return jsonify({'success': False, 'error': 'Missing required fields: location and item'})
     
-    # Build prompt
-    prompt_cmd = f'python3 prompt_builder.py "{location}" "{item}" "{mantra}" "{aspect_ratio}" "{palette}"'
+    # Build prompt without mantra - mantras are handled via watermarking only
+    prompt_cmd = f'python3 prompt_builder.py "{location}" "{item}" "{aspect_ratio}" "{palette}"'
     prompt_result = run_command(prompt_cmd)
     
     if not prompt_result['success']:

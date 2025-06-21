@@ -56,6 +56,9 @@ class DirectPromptGenerator:
         # Start with base prompt
         enhanced = base_prompt.strip()
         
+        # Add explicit no-text directive since we add mantras via watermarking
+        enhanced += ", no text, no writing, no words, no typography, no signs"
+        
         # Add style preset if specified
         if style and style in self.style_presets:
             enhanced += f", {self.style_presets[style]}"
@@ -71,9 +74,8 @@ class DirectPromptGenerator:
         # Add color harmony
         enhanced += ", harmonious color palette, refined aesthetics"
         
-        # Add mantra if provided
-        if mantra:
-            enhanced += f', text overlay "{mantra}"'
+        # NOTE: We don't add text overlay in the prompt since we add mantras via watermarking
+        # The mantra parameter is kept for compatibility but not used in prompt
         
         # Add aspect ratio note
         enhanced += ", commercial photography style"

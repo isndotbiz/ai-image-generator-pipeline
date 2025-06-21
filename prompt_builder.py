@@ -119,7 +119,7 @@ def get_brand_tone_phrase(tone_type: str = "sophisticated") -> str:
         return phrases[0]
     return "refined sophistication"
 
-def build_enhanced_prompt_with_palette(location: str, item: str, mantra: str, 
+def build_enhanced_prompt_with_palette(location: str, item: str, 
                                      aspect_ratio: str = "4:5",
                                      palette_id: Optional[str] = None,
                                      tone_type: str = "sophisticated") -> str:
@@ -129,7 +129,6 @@ def build_enhanced_prompt_with_palette(location: str, item: str, mantra: str,
     Args:
         location: The setting/background location
         item: The product item to feature
-        mantra: Brand mantra/text overlay
         aspect_ratio: Image aspect ratio
         palette_id: Palette identifier for color injection
         tone_type: Brand tone type
@@ -160,8 +159,9 @@ def build_enhanced_prompt_with_palette(location: str, item: str, mantra: str,
     brand_tone = get_brand_tone_phrase(tone_type)
     base_prompt += f", {brand_tone}"
     
-    # Add mantra and aspect ratio
-    base_prompt += f', text overlay "{mantra}", {aspect_ratio}, commercial photography style'
+    # Don't add mantra to prompt since we add it via watermarking
+    # This prevents AI-generated text that would conflict with our watermarks
+    base_prompt += f', {aspect_ratio}, commercial photography style'
     
     return base_prompt
 
@@ -190,12 +190,15 @@ text overlay "{text_overlay}", {aspect_ratio}, {style}"""
 def get_negative_prompt() -> str:
     """
     Get the standard negative prompt for filtering unwanted content.
+    Enhanced to prevent AI-generated text since we add mantras via watermarking.
     
     Returns:
         Negative prompt string
     """
     return ("lowres, jpeg artifacts, plastic, text, watermark, "
-            "logo, duplicate, deformed, bad anatomy, nsfw, inappropriate")
+            "logo, duplicate, deformed, bad anatomy, nsfw, inappropriate, "
+            "writing, letters, words, typography, signs, labels, captions, "
+            "overlay text, generated text, AI text, embedded text")
 
 def build_enhanced_prompt(location: str, item: str, text_overlay: str, 
                          aspect_ratio: str = "4:5",
@@ -226,20 +229,19 @@ def build_enhanced_prompt(location: str, item: str, text_overlay: str,
     
     return base_prompt
 
-def validate_prompt_args(location: str, item: str, text_overlay: str, aspect_ratio: str) -> bool:
+def validate_prompt_args(location: str, item: str, aspect_ratio: str) -> bool:
     """
     Validate prompt arguments.
     
     Args:
         location: Location string
         item: Item string
-        text_overlay: Text overlay string
         aspect_ratio: Aspect ratio string
         
     Returns:
         True if all arguments are valid
     """
-    if not all([location.strip(), item.strip(), text_overlay.strip(), aspect_ratio.strip()]):
+    if not all([location.strip(), item.strip(), aspect_ratio.strip()]):
         return False
     
     valid_ratios = ["1:1", "4:5", "3:4", "9:16", "16:9", "2:3", "3:2"]
@@ -249,30 +251,29 @@ def validate_prompt_args(location: str, item: str, text_overlay: str, aspect_rat
     return True
 
 if __name__ == "__main__":
-    if len(sys.argv) < 4:
-        print("Usage: python3 prompt_builder.py <location> <item> <mantra> [aspect_ratio] [palette_id]")
+    if len(sys.argv) < 3:
+        print("Usage: python3 prompt_builder.py <location> <item> [aspect_ratio] [palette_id]")
         print("")
         print("Enhanced prompt builder with palette injection and brand tone phrases")
+        print("NOTE: Mantras are now handled via watermarking, not AI prompting")
         print("")
         print("Arguments:")
         print("  location     - Setting/background location (e.g., 'luxury office', 'modern studio')")
         print("  item         - Product item to feature (e.g., 'golden watch', 'leather briefcase')")
-        print("  mantra       - Brand mantra/text overlay (e.g., 'Invest Now, Thank Yourself Later')")
         print("  aspect_ratio - Image aspect ratio (optional, default: '4:5')")
         print("  palette_id   - Palette identifier for color injection (optional, e.g., 'A', 'B')")
         print("")
         print("Examples:")
-        print("  python3 prompt_builder.py 'luxury office' 'golden watch' 'Invest Now, Thank Yourself Later'")
-        print("  python3 prompt_builder.py 'modern studio' 'leather briefcase' 'Build Your Capital Foundation' '3:4' 'A'")
+        print("  python3 prompt_builder.py 'luxury office' 'golden watch'")
+        print("  python3 prompt_builder.py 'modern studio' 'leather briefcase' '3:4' 'A'")
         sys.exit(1)
     
     location = sys.argv[1]
     item = sys.argv[2]
-    mantra = sys.argv[3]
-    aspect_ratio = sys.argv[4] if len(sys.argv) > 4 else "4:5"
-    palette_id = sys.argv[5] if len(sys.argv) > 5 else None
+    aspect_ratio = sys.argv[3] if len(sys.argv) > 3 else "4:5"
+    palette_id = sys.argv[4] if len(sys.argv) > 4 else None
     
-    if not validate_prompt_args(location, item, mantra, aspect_ratio):
+    if not validate_prompt_args(location, item, aspect_ratio):
         print("Error: Invalid arguments provided")
         sys.exit(1)
     
@@ -280,7 +281,6 @@ if __name__ == "__main__":
     prompt = build_enhanced_prompt_with_palette(
         location=location,
         item=item,
-        mantra=mantra,
         aspect_ratio=aspect_ratio,
         palette_id=palette_id,
         tone_type="sophisticated"  # Can be made configurable if needed
@@ -291,7 +291,6 @@ if __name__ == "__main__":
     print("=== Enhanced Prompt Builder Output ===")
     print(f"Location: {location}")
     print(f"Item: {item}")
-    print(f"Mantra: {mantra}")
     print(f"Aspect Ratio: {aspect_ratio}")
     if palette_id:
         print(f"Palette ID: {palette_id}")

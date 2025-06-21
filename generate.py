@@ -28,6 +28,7 @@ def generate_image(prompt: str, aspect_ratio: str = "4:5",
                   output_format: str = "png") -> Optional[str]:
     """
     Generate an image using Replicate API.
+    Enhanced to prevent AI-generated text since we add mantras via watermarking.
     
     Args:
         prompt: The generation prompt
@@ -48,9 +49,20 @@ def generate_image(prompt: str, aspect_ratio: str = "4:5",
             "output_format": output_format
         }
         
+        # Enhanced default negative prompt to prevent AI-generated text
+        default_negative = ("text, watermark, writing, letters, words, typography, "
+                          "signs, labels, captions, overlay text, generated text, "
+                          "AI text, embedded text, lowres, jpeg artifacts, plastic, "
+                          "logo, duplicate, deformed, bad anatomy, nsfw, inappropriate")
+        
         if negative_prompt:
-            input_params["negative_prompt"] = negative_prompt
-            logger.debug(f"Using negative prompt: {negative_prompt}")
+            # Combine user negative prompt with our anti-text directives
+            combined_negative = f"{negative_prompt}, {default_negative}"
+            input_params["negative_prompt"] = combined_negative
+            logger.debug(f"Using combined negative prompt: {combined_negative}")
+        else:
+            input_params["negative_prompt"] = default_negative
+            logger.debug(f"Using default anti-text negative prompt: {default_negative}")
         
         logger.debug(f"Using model: {model}, aspect_ratio: {aspect_ratio}")
         

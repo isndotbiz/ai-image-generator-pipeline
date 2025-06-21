@@ -239,37 +239,133 @@ class WatermarkWorkflow:
             self.logger.error(f"Git sync failed: {e}")
             return False
     
+    def detect_double_text_images(self) -> List[str]:
+        """Detect and remove images that may have double text overlays"""
+        self.logger.info("Scanning for double-text images")
+        
+        double_text_images = []
+        all_images = self.find_images(include_watermarked=True)
+        
+        # Simple heuristic: look for images with "_text" or "_overlay" in filename
+        # or images that are suspiciously large (indicating multiple overlays)
+        for img_path in all_images:
+            try:
+                # Check filename patterns that might indicate double text
+                filename = str(img_path).lower()
+                suspicious_patterns = ['_text_', '_overlay_', '_double_', '_dup_']
+                
+                if any(pattern in filename for pattern in suspicious_patterns):
+                    double_text_images.append(str(img_path))
+                    self.logger.info(f"Found suspicious double-text image: {img_path}")
+                    
+                # You could add more sophisticated detection here
+                # such as checking file size or using image analysis
+                    
+            except Exception as e:
+                self.logger.error(f"Error checking image {img_path}: {e}")
+        
+        # Remove detected double-text images
+        removed_count = 0
+        for img_path in double_text_images:
+            try:
+                Path(img_path).unlink()
+                removed_count += 1
+                self.logger.info(f"✓ Removed double-text image: {img_path}")
+            except Exception as e:
+                self.logger.error(f"✗ Failed to remove {img_path}: {e}")
+        
+        self.logger.info(f"Removed {removed_count} double-text images")
+        return double_text_images
+    
     def run_full_workflow(self) -> Dict[str, any]:
         """Run the complete watermarking and cleanup workflow"""
+        start_time = datetime.now()
         self.logger.info("=== STARTING FULL WATERMARK WORKFLOW ===")
+        self.logger.info(f"Workflow started at: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
         
+        # Initialize comprehensive metrics
         results = {
+            "workflow_start_time": start_time.isoformat(),
+            "total_images_processed": 0,
             "watermarked_files": [],
-            "removed_files": [],
+            "originals_deleted": [],
+            "double_text_images_removed": [],
             "git_synced": False,
             "sync_info": {},
-            "errors": []
+            "errors": [],
+            "metrics": {
+                "total_images_found": 0,
+                "watermarked_count": 0,
+                "originals_deleted_count": 0,
+                "double_text_removed_count": 0,
+                "processing_time_seconds": 0
+            }
         }
         
         try:
+            # Count total images at start
+            all_images = self.find_images(include_watermarked=True)
+            results["metrics"]["total_images_found"] = len(all_images)
+            self.logger.info(f"Found {len(all_images)} total images to process")
+            
             # Step 1: Watermark new images
+            self.logger.info("--- STEP 1: WATERMARKING NEW IMAGES ---")
             results["watermarked_files"] = self.watermark_new_images()
+            results["metrics"]["watermarked_count"] = len(results["watermarked_files"])
             
-            # Step 2: Cleanup non-watermarked images
-            results["removed_files"] = self.cleanup_non_watermarked()
+            # Step 2: Cleanup non-watermarked images (originals)
+            self.logger.info("--- STEP 2: CLEANING UP ORIGINAL IMAGES ---")
+            results["originals_deleted"] = self.cleanup_non_watermarked()
+            results["metrics"]["originals_deleted_count"] = len(results["originals_deleted"])
             
-            # Step 3: Check git sync
+            # Step 3: Detect and remove double-text images
+            self.logger.info("--- STEP 3: REMOVING DOUBLE-TEXT IMAGES ---")
+            results["double_text_images_removed"] = self.detect_double_text_images()
+            results["metrics"]["double_text_removed_count"] = len(results["double_text_images_removed"])
+            
+            # Step 4: Check git sync
+            self.logger.info("--- STEP 4: CHECKING GIT SYNC STATUS ---")
             results["sync_info"] = self.check_git_sync()
             
-            # Step 4: Sync to remote
+            # Step 5: Sync to remote
+            self.logger.info("--- STEP 5: SYNCING TO REMOTE ---")
             results["git_synced"] = self.sync_and_cleanup_remote()
             
+            # Calculate total processed
+            results["total_images_processed"] = (
+                results["metrics"]["watermarked_count"] + 
+                results["metrics"]["originals_deleted_count"] + 
+                results["metrics"]["double_text_removed_count"]
+            )
+            
+            # Calculate processing time
+            end_time = datetime.now()
+            processing_time = (end_time - start_time).total_seconds()
+            results["metrics"]["processing_time_seconds"] = processing_time
+            results["workflow_end_time"] = end_time.isoformat()
+            
+            # Log comprehensive summary
+            self.logger.info("=== WORKFLOW METRICS SUMMARY ===")
+            self.logger.info(f"Total images found: {results['metrics']['total_images_found']}")
+            self.logger.info(f"Total images processed: {results['total_images_processed']}")
+            self.logger.info(f"Number of watermarked files: {results['metrics']['watermarked_count']}")
+            self.logger.info(f"Number of originals deleted: {results['metrics']['originals_deleted_count']}")
+            self.logger.info(f"Number of double-text images removed: {results['metrics']['double_text_removed_count']}")
+            self.logger.info(f"Git synced successfully: {results['git_synced']}")
+            self.logger.info(f"Processing time: {processing_time:.2f} seconds")
+            self.logger.info(f"Workflow completed at: {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
             self.logger.info("=== WORKFLOW COMPLETED SUCCESSFULLY ===")
             
         except Exception as e:
             error_msg = f"Workflow error: {e}"
             self.logger.error(error_msg)
             results["errors"].append(error_msg)
+            
+            # Still calculate processing time on error
+            end_time = datetime.now()
+            processing_time = (end_time - start_time).total_seconds()
+            results["metrics"]["processing_time_seconds"] = processing_time
+            results["workflow_end_time"] = end_time.isoformat()
         
         return results
 
@@ -305,9 +401,12 @@ def main():
     elif args.mode == "full":
         results = workflow.run_full_workflow()
         print("\nWorkflow Results:")
+        print(f"  Total images processed: {results['total_images_processed']}")
         print(f"  Watermarked: {len(results['watermarked_files'])} files")
-        print(f"  Cleaned up: {len(results['removed_files'])} files")
+        print(f"  Originals deleted: {len(results['originals_deleted'])} files")
+        print(f"  Double-text images removed: {len(results['double_text_images_removed'])} files")
         print(f"  Git synced: {results['git_synced']}")
+        print(f"  Processing time: {results['metrics']['processing_time_seconds']:.2f} seconds")
         if results["errors"]:
             print(f"  Errors: {len(results['errors'])}")
 
