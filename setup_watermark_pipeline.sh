@@ -19,7 +19,7 @@ fi
 
 # Make sure Python dependencies are available
 echo "Checking Python dependencies..."
-python3 -c "import PIL; print('✓ Pillow available')" || echo "✗ Pillow not available - install with: pip install Pillow"
+venv/bin/python -c "import PIL; print('✓ Pillow available')" || echo "✗ Pillow not available - install with: venv/bin/pip install Pillow"
 
 # Create necessary directories
 mkdir -p images/{pending,approved,rejected,selected_for_video,ranked}
@@ -34,9 +34,9 @@ chmod +x watermark.py
 echo "=== Setup complete! ==="
 echo ""
 echo "Available commands:"
-echo "  python3 auto_watermark_workflow.py --mode full    # Run complete workflow"
-echo "  python3 auto_watermark_workflow.py --mode watermark # Just add watermarks"
-echo "  python3 auto_watermark_workflow.py --mode cleanup   # Clean non-watermarked"
-echo "  python3 app.py                                      # Start web interface"
+echo "  venv/bin/python auto_watermark_workflow.py --mode full    # Run complete workflow"
+echo "  venv/bin/python auto_watermark_workflow.py --mode watermark # Just add watermarks"
+echo "  venv/bin/python auto_watermark_workflow.py --mode cleanup   # Clean non-watermarked"
+echo "  venv/bin/python app.py                                      # Start web interface"
 echo ""
 echo "Web interface will be available at: http://localhost:8080"

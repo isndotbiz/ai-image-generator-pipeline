@@ -1,4 +1,4 @@
-#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
+#!/usr/bin/env -S bash -c 'source venv/bin/activate && exec "$0" "$@"'
 set -e
 # Requires: pip3 install replicate requests piexif
 # Remember: export REPLICATE_API_TOKEN="YOUR_TOKEN"
@@ -22,12 +22,12 @@ gen() {
     local outfile="${IMAGES_DIR}/${slug}_${palette_id}_${platform}.png"
     
     # Build the prompt using prompt_builder.py with palette injection
-    local prompt_output=$(python3 prompt_builder.py "$location" "$item" "$mantra" "$aspect_ratio" "$palette_id")
+    local prompt_output=$(venv/bin/python prompt_builder.py "$location" "$item" "$mantra" "$aspect_ratio" "$palette_id")
     local prompt=$(echo "$prompt_output" | grep "^Prompt:" | sed 's/^Prompt: //')
     local negative_prompt=$(echo "$prompt_output" | grep "^Negative prompt:" | sed 's/^Negative prompt: //')
     
     # Generate the image using generate.py
-    if python3 generate.py "$prompt" "$outfile" "$aspect_ratio" "$negative_prompt"; then
+    if venv/bin/python generate.py "$prompt" "$outfile" "$aspect_ratio" "$negative_prompt"; then
         # Add platform-specific watermark
         local platform_name
         case "$platform" in
@@ -38,7 +38,7 @@ gen() {
         esac
         
         # Apply logo watermark using watermark.py
-        local watermarked_file=$(python3 watermark.py "$outfile" "Fortuna_Bound_Watermark.png" "$platform_name" --logo)
+        local watermarked_file=$(venv/bin/python watermark.py "$outfile" "Fortuna_Bound_Watermark.png" "$platform_name" --logo)
         echo "Successfully generated and watermarked: $watermarked_file"
     else
         echo "Failed to generate $outfile"

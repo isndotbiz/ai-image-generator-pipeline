@@ -1,4 +1,4 @@
-#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
+#!/usr/bin/env -S bash -c 'source venv/bin/activate && exec "$0" "$@"'
 
 # Daily Palette Rotation Script
 # This script can be run daily via cron to update A/B palettes
@@ -18,7 +18,7 @@ cd "$SCRIPT_DIR"
 echo "[$(date)] Starting daily palette rotation..." >> palette_rotation.log
 
 # Run the A/B palette selector
-if python3 ab_palette_selector.py >> palette_rotation.log 2>&1; then
+if venv/bin/python ab_palette_selector.py >> palette_rotation.log 2>&1; then
     echo "[$(date)] Palette rotation completed successfully" >> palette_rotation.log
 else
     echo "[$(date)] ERROR: Palette rotation failed" >> palette_rotation.log

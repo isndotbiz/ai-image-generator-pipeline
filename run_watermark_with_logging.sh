@@ -20,7 +20,7 @@ echo ""
 
 # Run the workflow with comprehensive logging
 echo "Running watermark workflow..."
-python3 auto_watermark_workflow.py --mode full > "$LOG_FILE" 2>&1
+venv/bin/python auto_watermark_workflow.py "$@" 2>&1 | tee -a "$LOG_FILE"
 
 # Check if workflow completed successfully
 if [ $? -eq 0 ]; then

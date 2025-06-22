@@ -1,8 +1,8 @@
-#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
+#!/usr/bin/env -S bash -c 'source venv/bin/activate && exec "$0" "$@"'
 
 gen () {
     echo "Testing with args: $1, $2, $3, $4, $5, $6"
-    python3 - "$1" "$2" "$3" "$4" "$5" "$6" <<PY
+    venv/bin/python - "$1" "$2" "$3" "$4" "$5" "$6" <<PY
 import sys
 print(f"Python received {len(sys.argv)} args:")
 for i, arg in enumerate(sys.argv):

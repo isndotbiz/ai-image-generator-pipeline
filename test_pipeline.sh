@@ -1,4 +1,4 @@
-#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
+#!/usr/bin/env -S bash -c 'source venv/bin/activate && exec "$0" "$@"'
 # Test script to validate the integrated pipeline without actual image generation
 set -e
 
@@ -32,7 +32,7 @@ for palette in A B; do
         
         # Test prompt building with palette injection
         echo "Testing prompt builder..."
-        prompt_output=$(python3 prompt_builder.py "$location" "$item" "$mantra" "$aspect_ratio" "$palette")
+        prompt_output=$(venv/bin/python prompt_builder.py "$location" "$item" "$mantra" "$aspect_ratio" "$palette")
         
         # Extract prompt and negative prompt
         prompt=$(echo "$prompt_output" | grep "^Prompt:" | sed 's/^Prompt: //')

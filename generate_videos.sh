@@ -14,11 +14,9 @@ fi
 echo "✅ Runway API key found"
 echo "🚀 Starting video generation..."
 
-# Activate environment
-source ~/menv/bin/activate
-
-# Generate videos using the intelligent video generator
-python3 intelligent_video_generator.py --max-videos 5 --use-rankings
+# Use local virtual environment executables
+# Alternative: source venv/bin/activate && python intelligent_video_generator.py --max-videos 5 --use-rankings
+venv/bin/python intelligent_video_generator.py --max-videos 5 --use-rankings
 
 echo "
 🎉 Video generation complete!"

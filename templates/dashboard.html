@@ -412,6 +412,76 @@
                     <strong>Error!</strong> <span id="paletteErrorMsg"></span>
                 </div>
             </div>
+            
+            <!-- Audio Generation -->
+            <div class="card">
+                <h2>🎵 Audio Generation</h2>
+                <p>Generate ambient sounds and voiceovers using AI.</p>
+                
+                <!-- Ambient Sound Section -->
+                <div style="border-bottom: 1px solid #eee; padding-bottom: 1rem; margin-bottom: 1rem;">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #555;">Ambient Sounds</h3>
+                    
+                    <div class="form-group">
+                        <label for="ambientPrompt">Ambient Prompt:</label>
+                        <input type="text" id="ambientPrompt" placeholder="e.g., peaceful forest sounds with birds chirping">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ambientDuration">Duration (s):</label>
+                        <input type="number" id="ambientDuration" value="30" min="5" max="300">
+                    </div>
+                    
+                    <button class="btn" onclick="generateAmbient()">🌊 Generate Ambient</button>
+                </div>
+                
+                <!-- Voiceover Section -->
+                <div style="margin-bottom: 1rem;">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #555;">Voiceover</h3>
+                    
+                    <div class="form-group">
+                        <label for="voiceoverText">Voiceover Text:</label>
+                        <textarea id="voiceoverText" placeholder="Enter the text to be spoken..." style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; min-height: 100px; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="voiceSelection">Voice Selection:</label>
+                        <select id="voiceSelection">
+                            <option value="male-narrator">Male Narrator</option>
+                            <option value="female-narrator">Female Narrator</option>
+                            <option value="male-casual">Male Casual</option>
+                            <option value="female-casual">Female Casual</option>
+                            <option value="male-professional">Male Professional</option>
+                            <option value="female-professional">Female Professional</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn" onclick="generateVoiceover()">🎤 Generate Voiceover</button>
+                </div>
+                
+                <!-- Loading Spinner -->
+                <div class="loading" id="audioLoading">
+                    <div class="spinner"></div>
+                    <p>Generating audio... This may take a moment.</p>
+                </div>
+                
+                <!-- Success Alert with Audio Preview -->
+                <div class="alert alert-success" id="audioSuccess">
+                    <strong>Success!</strong> Audio generated successfully!
+                    <div style="margin-top: 1rem;">
+                        <audio id="audioPreview" controls style="width: 100%; margin-bottom: 0.5rem;">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <br>
+                        <a id="audioDownload" href="#" download class="btn btn-secondary" style="display: inline-block; margin-top: 0.5rem;">📥 Download Audio</a>
+                    </div>
+                </div>
+                
+                <!-- Error Alert -->
+                <div class="alert alert-error" id="audioError">
+                    <strong>Error!</strong> <span id="audioErrorMsg"></span>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -641,6 +711,93 @@
             } catch (error) {
                 hideLoading('videoLoading');
                 showAlert('videoError', error.message);
+            }
+        }
+        
+        // Audio Generation Functions
+        async function generateAmbient() {
+            hideAllAlerts('audio');
+            showLoading('audioLoading');
+            
+            const data = {
+                prompt: document.getElementById('ambientPrompt').value,
+                duration: parseInt(document.getElementById('ambientDuration').value)
+            };
+            
+            if (!data.prompt.trim()) {
+                hideLoading('audioLoading');
+                showAlert('audioError', 'Please enter an ambient prompt');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/generate-ambient', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                hideLoading('audioLoading');
+                
+                if (result.success) {
+                    const audioPreview = document.getElementById('audioPreview');
+                    const audioDownload = document.getElementById('audioDownload');
+                    
+                    audioPreview.src = result.audio_url;
+                    audioDownload.href = result.audio_url;
+                    audioDownload.download = result.filename || 'ambient_audio.wav';
+                    
+                    showAlert('audioSuccess');
+                } else {
+                    showAlert('audioError', result.error);
+                }
+            } catch (error) {
+                hideLoading('audioLoading');
+                showAlert('audioError', error.message);
+            }
+        }
+        
+        async function generateVoiceover() {
+            hideAllAlerts('audio');
+            showLoading('audioLoading');
+            
+            const data = {
+                text: document.getElementById('voiceoverText').value,
+                voice: document.getElementById('voiceSelection').value
+            };
+            
+            if (!data.text.trim()) {
+                hideLoading('audioLoading');
+                showAlert('audioError', 'Please enter text for the voiceover');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/generate-voiceover', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                hideLoading('audioLoading');
+                
+                if (result.success) {
+                    const audioPreview = document.getElementById('audioPreview');
+                    const audioDownload = document.getElementById('audioDownload');
+                    
+                    audioPreview.src = result.audio_url;
+                    audioDownload.href = result.audio_url;
+                    audioDownload.download = result.filename || 'voiceover_audio.wav';
+                    
+                    showAlert('audioSuccess');
+                } else {
+                    showAlert('audioError', result.error);
+                }
+            } catch (error) {
+                hideLoading('audioLoading');
+                showAlert('audioError', error.message);
             }
         }
         

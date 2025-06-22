@@ -96,6 +96,41 @@ The system employs a sophisticated 4-layer modular architecture designed for sca
 
 ### Quick Start - Individual Modules
 
+#### 0. Audio Generation
+Audio generation feature allows creating ambient sounds and voiceovers using AI-driven techniques.
+
+**Ambient Sound Generation:**
+- Prompt: Describe the ambient scene (e.g., "peaceful forest sounds with birds chirping")
+- Duration: Specify time in seconds (5 to 300 seconds)
+- Example API call:
+  ```bash
+  curl -X POST "http://localhost:8080/api/generate-ambient" \
+    -H "Content-Type: application/json" \
+    -d '{"prompt": "peaceful forest sounds", "duration": 30}'
+  ```
+
+**Voiceover Generation:**
+- Text: Input text for TTS conversion
+- Voice Selection: Choose from available voices (see supported voices below)
+- Example API call:
+  ```bash
+  curl -X POST "http://localhost:8080/api/generate-voiceover" \
+    -H "Content-Type: application/json" \
+    -d '{"text": "Welcome to the future of content creation", "voice": "female-narrator"}'
+  ```
+
+**Supported Voices:**
+- `male-narrator` - Male narrator voice
+- `female-narrator` - Female narrator voice (default)
+- `male-casual` - Male casual voice
+- `female-casual` - Female casual voice
+- `male-professional` - Male professional voice
+- `female-professional` - Female professional voice
+
+**Parameters:**
+- **Ambient Audio**: `prompt` (string, required), `duration` (integer, 5-300 seconds)
+- **Voiceover**: `text` (string, required), `voice` (string, optional)
+
 #### 1. Color Palette Extraction
 ```bash
 # Extract 5 dominant colors from reference image
@@ -243,6 +278,7 @@ diff <(python3 prompt_builder.py "modern studio" "luxury briefcase" "Build Your 
 
 #### Required Variables
 - `REPLICATE_API_TOKEN` - Required for image generation via Replicate API
+- `ELEVENLABS_API_KEY` - Required for audio generation (ambient sounds and voiceovers)
 - `PYTHONPATH` - Optional: Add project directory to Python path for imports
 
 #### Smartproxy Environment Variables (for curl + Smartproxy usage)

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S bash -c 'source ~/menv/bin/activate && exec "$0" "$@"'
+#!/usr/bin/env -S bash -c 'source venv/bin/activate && exec "$0" "$@"'
 
 # Runway Gen-4 Setup Script
 echo "🎬 Runway Gen-4 Video Generation Setup"
@@ -26,7 +26,7 @@ else
     echo "   export RUNWAY_API_KEY='your-api-key-here'"
     echo
     echo "3. Run the generator:"
-    echo "   python runway_generator.py"
+    echo "   venv/bin/python runway_generator.py"
     echo
     echo "💡 You can also add the export to your ~/.zshrc to make it permanent"
     echo
