@@ -1,0 +1,97 @@
+## 1. Silk & Control
+
+Flux Prompt:
+Photorealistic image of an elegant woman lounging on a chaise in a marble room with floor-to-ceiling windows and soft white curtains. She's wearing a silk champagne-colored robe that drapes naturally. A single gold anklet is visible. She’s sipping espresso, gazing at the viewer with slight amusement, one eyebrow raised. Ambient sunlight dances across her skin, revealing skin texture, natural pores, and soft shadows.
+
+Runway Gen‑3 Prompt:
+10-second cinematic pan from feet (with anklet) to her face. Curtains flutter. Espresso steam rises gently. Natural sunlight glows softly across the room.
+
+---
+
+## 2. Gold Mirror Affirmation
+
+Flux Prompt:
+Scene: Ornate gold-framed mirror with the woman leaning over a marble vanity, applying lipstick. Realistic facial pores and natural skin tone emphasized by warm gold lighting. Background is soft-focus velvet drapes, perfume bottles, and a golden compact.
+
+Runway Gen‑3 Prompt:
+10-second slow zoom from mirror to her eye contact in the reflection. Lighting subtly warms across her cheekbones.
+
+---
+
+## 3. Candlelight Contract
+
+Flux Prompt:
+The woman sits at a desk in a mahogany study. She writes with a quill on thick parchment beside stacked tribute envelopes. Face lit only by candlelight, deep shadows give it a gothic power dynamic tone. Her corseted silhouette is poised and unbothered.
+
+Runway Gen‑3 Prompt:
+10-second slow pan across desk, over quill, toward her face. Candlelight flickers on her skin.
+
+---
+
+## 4. Crystal & Compliance
+
+Flux Prompt:
+Inside a luxury penthouse, the woman stands beside a crystal decanter, pouring amber liquid into a cut-glass tumbler. She's dressed in high-slit velvet eveningwear, backlit by ambient city skyline reflections.
+
+Runway Gen‑3 Prompt:
+Camera tracks crystal pour, then upward to her face as she smirks knowingly. 10 seconds.
+
+---
+
+## 5. Chandelier Ritual
+
+Flux Prompt:
+She stands directly beneath a massive chandelier, one hand raised to adjust a chain or pendant. She’s dressed in a gold-embellished gown with velvet gloves. Skin tone warm, detailed, glowing. Eyes locked forward with restrained confidence.
+
+Runway Gen‑3 Prompt:
+10-second upward tilt as chandelier sparkles, light blooming subtly, ending at her gaze.
+
+---
+
+## 6. Leather & Ledger
+
+Flux Prompt:
+In a high-end office, she sits in a tall leather chair with an open ledger on the desk. She glances sideways with a calculating expression. Her fingers toy with a fountain pen. Dark ambient lighting defines cheekbone texture and posture.
+
+Runway Gen‑3 Prompt:
+Slow circular 10-sec move from behind the chair to a face reveal. Pen clicks once.
+
+---
+
+## 7. Sapphire Obedience
+
+Flux Prompt:
+The woman wears a sapphire silk gown while standing barefoot in a minimalist stone room. A low-lit altar glows behind her. She holds a leash loop loosely in one hand, eyes neutral but firm.
+
+Runway Gen‑3 Prompt:
+10-second shot from ground to face, altar glow intensifies, her grip shifts slightly.
+
+---
+
+## 8. The Key
+
+Flux Prompt:
+She leans against a grand piano, holding a small golden key between two fingers. Background includes draped pearls, dark wallpaper, and candle sconces. Her gaze is downward, thoughtful but powerful.
+
+Runway Gen‑3 Prompt:
+Camera push in from candle to key, then slow shift to her lips, then eyes. 10 seconds.
+
+---
+
+## 9. Tipping Point
+
+Flux Prompt:
+She lounges in a velvet armchair beside a vintage scale tipped heavily on one side—coins, watches, and envelopes piled high. She crosses her legs, expression amused.
+
+Runway Gen‑3 Prompt:
+Pan from scale to her smirk. Slight ambient dust or glitter drift. 10 seconds.
+
+---
+
+## 10. Night Call
+
+Flux Prompt:
+She’s on a balcony at night overlooking a city skyline. One hand holds a lit phone to her ear. She’s wearing a structured blazer and satin heels. City lights glint on her skin, which is rendered with high texture fidelity.
+
+Runway Gen‑3 Prompt:
+Camera starts behind her shoulder, reveals her face with light breeze in her hair. 10 seconds.

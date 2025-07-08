@@ -1,0 +1,22 @@
+
+🎬 Image to Video Converter
+
+USAGE:
+  python3 simple_image_to_video.py <image_path> "<prompt>"
+
+EXAMPLE:
+  python3 simple_image_to_video.py images/throne_ritual_command_tiktok_20250622_102717_watermarked.png "Slow zoom from her hand resting on the armrest up to her face, candles flickering in the background, ambient shadows shifting. Cinematic ritual chamber movement."
+
+📋 WHAT THIS SCRIPT DOES:
+1. ✅ Validates your image file exists
+2. ✅ Checks RunwayML API key is set  
+3. ✅ Generates the exact curl commands you need
+4. 💡 Shows you step-by-step instructions
+
+🎯 YOUR FINDOM VIDEO PROMPTS:
+• Throne Ritual: "Slow zoom from her hand resting on the armrest up to her face, candles flickering in the background, ambient shadows shifting. Cinematic ritual chamber movement."
+• Mirror Control: "Start with reflection in the mirror, then shift focus slowly to her actual face turning toward the camera. Candlelight flickers on silk and skin."
+• Office Obedience: "Camera slowly pushes in from the stack of tribute envelopes toward her gaze. A faint flicker from a candle reflects off her blazer."
+• Champagne Command: "Start with close-up of the champagne glass, then slow pan up to her face, catching the candlelight reflection in her eyes. Subtle camera push-in."
+• Golden Watch: "Zoom from watch ticking in her hand to her face slowly lifting, making direct eye contact with the viewer. Background shadows move slightly."
+
